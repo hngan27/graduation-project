@@ -1,0 +1,25 @@
+{
+  "error": {
+    "title": "Lỗi",
+    "userNotFound": "Không tìm thấy người dùng",
+    "courseNotFound": "Không tìm thấy khóa học",
+    "internalServerError": "Lỗi máy chủ",
+    "badRequest": "Yêu cầu không hợp lệ",
+    "unauthorized": "Không được ủy quyền",
+    "forbidden": "Bị cấm",
+    "conflict": "Xung đột",
+    "unprocessableEntity": "Không thể xử lý yêu cầu",
+    "tooManyRequests": "Quá nhiều yêu cầu",
+    "serviceUnavailable": "Dịch vụ không khả dụng",
+    "gatewayTimeout": "Quá thời gian chờ",
+    "notImplemented": "Chức năng chưa được triển khai",
+    "unknown": "Lỗi không xác định",
+    "invalidId": "ID không hợp lệ.",
+    "permissionDenied": "Không có quyền truy cập",
+    "failedToRetrieveCourseDetails": "Không thể lấy thông tin khóa học.",
+    "search_failed": "Đã xảy ra lỗi trong quá trình tìm kiếm",
+    "lessonNotFound": "Không tìm thấy bài giảng",
+    "notVerify": "Vui lòng xác minh tài khoản của bạn trước tiên",
+    "invalidCode": "Mã không hợp lệ hoặc đã hết hạn. Vui lòng lấy mã từ email mới nhất."
+  }
+}

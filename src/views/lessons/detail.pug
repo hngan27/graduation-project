@@ -1,0 +1,115 @@
+mixin formatDate(date)
+  - const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+  .text-gray-500.italic= date.toLocaleString('en-US', options)
+
+mixin calculateMinutes(startTime, endTime)
+  - const diff = endTime.getTime() - startTime.getTime();
+  - const minutes = Math.ceil(diff / 60000);
+  span= minutes
+
+mixin detail(lessonDetail, courseDetail, grade, exam)
+  if lessonDetail
+    h1.text-3xl.font-semibold.mb-2= lessonDetail.title
+    .mt-2.py-4
+      h3.font-bold.text-lg.mb-2 #{ t('lesson.detail.content') }
+      p= lessonDetail.content
+    .py-4
+      h3.font-bold.text-lg.mb-2 #{ t('lesson.detail.reference') }
+      if lessonDetail.file_url
+        - var url = lessonDetail.file_url;
+        if url.match(/\.(jpe?g|png|gif|bmp|svg)(\?.*)?$/i)
+          img.w-full.rounded(src=url, alt=t('lesson.detail.reference'))
+        else
+          video.w-full(controls, src=url)
+            | #{ t('lesson.detail.videoNotSupported') }
+      else
+        p.text-gray-500 #{ t('lesson.detail.noReference') }
+    .flex.justify-center.mt-2
+      if lessonDetail.done
+        form(method='post')
+          input(type='hidden', name='studentLessonId', value=studentLessonId)
+          .relative.inline-block.group
+            button.px-4.rounded-md.text-sm.tracking-wider.font-medium.outline-none.bg-green-500.text-white.py-2(
+              class='hover:bg-emerald-400',
+              type='submit'
+            ) ✓ #{ t('lesson.detail.done') }
+            .absolute.bottom-full.mb-2.px-3.py-1.bg-gray-800.text-white.text-xs.rounded-md.whitespace-nowrap.invisible.opacity-0(
+              class='left-1/2 -translate-x-1/2 group-hover:visible group-hover:opacity-100',
+              role='tooltip'
+            ) #{ t('lesson.detail.unmarkAsDone') }
+      else
+        form(method='post')
+          input(type='hidden', name='studentLessonId', value=studentLessonId)
+          button.px-4.rounded-md.text-sm.tracking-wider.font-medium.border.border-blue-700.outline-none.bg-transparent.text-blue-700.transition-all.duration-300.py-2(
+            class='hover:bg-green-500 hover:text-white hover:border-green-700',
+            type='submit'
+          ) #{ t('lesson.detail.markAsDone') }
+  if courseDetail
+    img.w-full.h-48.object-cover.rounded-sm.mb-6(
+      src=courseDetail.image_url === null ? '/images/course.png' : courseDetail.image_url,
+      alt=courseDetail.name
+    )
+    .flex.justify-between.items-center
+      h1.text-4xl.font-bold.mb-4= courseDetail.name
+        sup.ml-4
+          case courseDetail.level
+            when CourseLevel.BEGINNER
+              span.text-xs.bg-green-200.text-green-800.px-2.py-1.rounded-sm.font-bold #{ t('courseLevels.beginner') }
+            when CourseLevel.INTERMEDIATE
+              span.text-xs.bg-amber-200.text-amber-800.px-2.py-1.rounded-sm.font-bold #{ t('courseLevels.intermediate') }
+            when CourseLevel.ADVANCED
+              span.text-xs.bg-red-200.text-red-800.px-2.py-1.rounded-sm.font-bold #{ t('courseLevels.advanced') }
+            when CourseLevel.EXPERT
+              span.text-xs.bg-purple-200.text-purple-800.px-2.py-1.rounded-sm.font-bold #{ t('courseLevels.expert') }
+    .py-4
+      h3.font-bold.text-lg.mb-2 #{ t('course.detail.about') }
+      p= courseDetail.description
+    .py-4
+      h3.font-bold.text-lg.mb-2 #{ t('course.detail.taughtBy') }
+      .items-center.justify-between(class='md:flex')
+        .flex.gap-1
+          p.font-bold #{ t('course.detail.instructor') }:
+          a.text-blue-700(href=`/users/${courseDetail.instructor.id}`)= courseDetail.instructor.name
+  if grade
+    .flex.justify-start.text-3xl.font-bold.mb-6 #{ grade.assignment.name }
+    .flex.justify-between
+      strong #{ t('exam.maxGrade') }: #{ grade.max_grade }
+      .flex.items-center.gap-1
+        strong #{ t('exam.status') }:
+        case grade.status
+          when AssignmentStatus.TODO
+            span.text-sm.bg-gray-200.text-gray-800.rounded-md.px-2.py-1 #{ t('exam.todo') }
+          when AssignmentStatus.DOING
+            span.text-sm.bg-orange-200.text-orange-800.rounded-md.px-2.py-1 #{ t('exam.doing') }
+          when AssignmentStatus.PASS
+            span.text-sm.bg-green-200.text-green-800.rounded-md.px-2.py-1 #{ t('exam.pass') }
+          when AssignmentStatus.FAIL
+            span.text-sm.bg-red-200.text-red-800.rounded-md.px-2.py-1 #{ t('exam.fail') }
+    br
+    .pb-5
+      strong #{ t('exam.description') }
+      p #{ grade.assignment.description }
+
+    if grade.submit_time
+      .pb-5
+        strong #{ t('exam.result') }:
+        p.font-bold #{ grade.grade } / #{ grade.max_grade }
+          |#[span.italic.font-light.pl-2 (#[+calculateMinutes(grade.start_time, grade.submit_time)] #{ t('common.minutes') })]
+
+    .flex.justify-center
+      a.px-5.rounded-lg.text-sm.tracking-wider.font-medium.border.border-blue-700.outline-none.bg-transparent.text-blue-700.transition-all.duration-300(
+        class='py-2.5 hover:bg-blue-700 hover:text-white',
+        type='submit',
+        href=`exam/${grade.assignment.id}`
+      ) #{ t('exam.doExam') }
+
+    if exam
+      .flex.justify-start.text-3xl.font-bold.mb-6 #{ exam.name }
+      .pb-5
+        strong #{ t('exam.description') }
+        p #{ exam.description }
+      .flex.justify-center
+        a.px-5.rounded-lg.text-sm.tracking-wider.font-medium.border.border-blue-700.outline-none.bg-transparent.text-blue-700.transition-all.duration-300(
+          class='py-2.5 hover:bg-blue-700 hover:text-white',
+          href=`exam/${exam.id}`
+        ) #{ t('exam.doExam') }

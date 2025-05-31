@@ -1,0 +1,173 @@
+extends layout
+
+block content
+  body
+    .container.mx-auto.px-4.py-4.flex.items-center
+      .max-w-6xl.mx-auto.flex.flex-col.items-center.justify-between.gap-16(
+        class='md:flex-row'
+      )
+        if !current_user || current_user.role !== UserRole.INSTRUCTOR
+          .mb-4(class='md:w-1/2 md:mb-0')
+            h1.text-4xl.font-bold.mb-2 #{ t('common.welcome') }
+            p.text-4xl.font-bold.text-indigo-600.mb-4 Go4ITMastery
+            p.text-gray-600.mb-6.text-justify #{ t('common.welcomeMessage') }
+            .flex.space-x-4
+              a.text-white.px-4.py-2.rounded-md.bg-indigo-700.transition(
+                href='/courses',
+                class='hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'
+              ) #{ t('common.getStarted') }
+
+          .relative(class='md:w-1/2')
+            img.w-full.h-auto(
+              src='/images/banner.png',
+              alt='Learning illustration'
+            )
+
+    if current_user && current_user.role === UserRole.STUDENT
+      .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+        .grid.gap-6.mb-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4')
+          .bg-teal-100.p-4.rounded-lg.flex.flex-col.items-center.justify-center
+            span.text-3xl.font-bold.text-teal-700= totalCourses
+            span.text-sm.text-teal-600= t('common.enrolledCourses')
+            a.text-teal-500.text-sm.mt-2(href='/courses') #{ t('common.viewDetails') } →
+          .bg-purple-100.p-4.rounded-lg.flex.flex-col.items-center.justify-center
+            span.text-3xl.font-bold.text-purple-700= totalLessons
+            span.text-sm.text-purple-600= t('common.lessons')
+            a.text-purple-500.text-sm.mt-2(href='/courses') #{ t('common.viewDetails') } →
+          - const completedCount = courseLearns.filter(c => c.status === CourseStatus.COMPLETED).length;
+          .bg-orange-100.p-4.rounded-lg.flex.flex-col.items-center.justify-center
+            span.text-3xl.font-bold.text-orange-700= completedCount
+            span.text-sm.text-orange-600= t('course.completed')
+            a.text-orange-500.text-sm.mt-2(href='/courses#completed') #{ t('common.viewDetails') } →
+          .flex.flex-col.items-center
+            .text-lg.font-semibold.mb-2= t('common.progress')
+            .w-16.h-16.rounded-full.border-2.border-orange-500.flex.items-center.justify-center
+              img.w-14.h-14.rounded-full.object-cover(
+                src=current_user.avatar_url || '/images/student.png',
+                alt='User'
+              )
+            .mt-2.text-center
+              .font-semibold= current_user ? current_user.name : 'Guest'
+              .text-sm.text-gray-500= t('common.mentee')
+      .mb-6
+      .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+        .flex.justify-between.items-center.mb-6
+          h2.text-xl.font-bold #{ t('course.learning') }
+          a.text-teal-500(href='/courses#learning') #{ t('common.seeAll') }
+        .space-y-4
+          - const learningCourses = courseLearns.filter(c => c.status !== CourseStatus.COMPLETED);
+          each course in learningCourses
+            a.flex.items-center.justify-between.bg-gray-50.p-4.rounded-md(
+              class='hover:bg-blue-50',
+              href=`/courses/${course.id}/lessons`
+            )
+              .flex.items-center.space-x-4
+                .w-10.h-10.rounded-sm.overflow-hidden.flex-shrink-0
+                  img.h-full.object-cover(
+                    src=course.image_url === null ? '/images/course.png' : course.image_url,
+                    alt='Image'
+                  )
+                .flex.flex-col
+                  .font-semibold= course.name
+                  .text-sm.text-gray-500= `${course.level} • ${course.duration}`
+              .flex.items-center.space-x-4
+                .w-32.bg-gray-200.rounded-full.h-2
+                  .bg-teal-500.rounded-full.h-2(
+                    style=`width: ${course.progress}%`
+                  )
+                span.text-sm.text-gray-500= `${course.progress}%`
+
+                case course.status
+                  when CourseStatus.COMPLETED
+                    span.text-sm.text-green-500= course.status
+                  when CourseStatus.INPROGRESS
+                    span.text-sm.text-orange-500= course.status
+                  default
+                    span.text-sm.text-gray-500= CourseStatus.NOTSTARTED
+                svg.w-6.h-6(
+                  fill='none',
+                  stroke='currentColor',
+                  viewBox='0 0 24 24'
+                )
+                  path(
+                    stroke-linecap='round',
+                    stroke-linejoin='round',
+                    stroke-width='2',
+                    d='M9 5l7 7-7 7'
+                  )
+    else if current_user && current_user.role === UserRole.INSTRUCTOR
+      .mb-6
+      .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+        .flex.justify-between.items-center.mb-6
+          h2.text-xl.font-bold #{ t('common.myCourses') }
+          a.text-teal-500(href='/courses') #{ t('common.seeAll') }
+        .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+          each course in myCourses.slice(0, 6)
+            a.block.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+              class='hover:shadow-xl hover:scale-105',
+              href=`/courses/${course.id}`
+            )
+              .bg-gray-50.rounded-lg.overflow-hidden
+                .flex.justify-center.items-center.h-48
+                  img.h-full(
+                    src=course.image_url === null ? '/images/course.png' : course.image_url,
+                    alt='Image'
+                  )
+                .p-4
+                  h3.font-semibold.mb-2= course.name
+                  p.text-sm.text-gray-600.mb-4= course.description
+                  .flex.justify-between.items-center.text-sm.text-gray-500
+                    span= `${course.level} • ${course.duration}`
+                    span= `${course.studentCount} ${t('courseDetails.students')}`
+    if !current_user || current_user.role !== UserRole.INSTRUCTOR
+      .mb-6
+      .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+        .flex.justify-between.items-center.mb-6
+          h2.text-xl.font-bold #{ t('common.recommend') }
+          a.text-teal-500(href='/courses#recommend') #{ t('common.seeAll') }
+        .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+          each course in courseRecommends.slice(0, 6)
+            a.block.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+              class='hover:shadow-xl hover:scale-105',
+              href=`/courses/${course.id}`
+            )
+              .bg-gray-50.rounded-lg.overflow-hidden
+                .flex.justify-center.items-center.h-48
+                  img.h-full(
+                    src=course.image_url === null ? '/images/course.png' : course.image_url,
+                    alt='Image'
+                  )
+                .p-4
+                  h3.font-semibold.mb-2= course.name
+                  p.text-sm.text-gray-600.mb-4= course.description
+                  .flex.justify-between.items-center.text-sm.text-gray-500
+                    span= `${course.level} • ${course.duration}`
+                    span= `${course.studentCount} ${t('courseDetails.students')}`
+      .mb-6
+      .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+        .flex.justify-between.items-center.mb-6
+          h2.text-xl.font-bold #{ t('common.newestCourse') }
+          a.text-teal-500(href='/courses#newestCourse') #{ t('common.seeAll') }
+        .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+          each course in newestCourses.slice(0, 6)
+            a.block.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+              class='hover:shadow-xl hover:scale-105',
+              href=`/courses/${course.id}`
+            )
+              .bg-gray-50.rounded-lg.overflow-hidden
+                .flex.justify-center.items-center.h-48
+                  img.h-full(
+                    src=course.image_url === null ? '/images/course.png' : course.image_url,
+                    alt='Image'
+                  )
+                .p-4
+                  h3.font-semibold.mb-2= course.name
+                  p.text-sm.text-gray-600.mb-4= course.description
+                  .flex.justify-between.items-center.text-sm.text-gray-500
+                    span= `${course.level} • ${course.duration}`
+                    span= `${course.studentCount} ${t('courseDetails.students')}`
+
+      .mb-6
+      .max-w-6xl.mx-auto.flex.justify-center
+        a.text-teal-500.font-medium(href='/courses#allCourses') Xem tất cả khóa học →
+      script(src='/javascripts/filter.js')

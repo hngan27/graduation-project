@@ -1,0 +1,65 @@
+extends index
+
+block content
+  .mb-6
+    .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+      .flex.justify-between.items-center.mb-6
+        h2.text-xl.font-bold #{ t('instructor.list_title') }
+        a.bg-blue-500.text-white.px-4.py-2.rounded-lg.transition(
+          href='/admin/users/create?role=Instructor'
+        ) #{ t('admin.create_user.title') }
+      if error_message
+        p.error-message.text-red-500.text-center.mb-4= error_message
+
+      if success_message
+        p.success-message.text-green-500.text-center.mb-4= success_message
+
+      .flex.justify-end
+        form.flex.items-center(action='/admin/list-instructors', method='get')
+          input.border.rounded-lg.p-2.mr-2(
+            type='text',
+            name='search',
+            value=searchQuery,
+            placeholder=t('instructor.search_placeholder')
+          )
+          button.bg-green-500.text-white.rounded-lg.px-4.py-2(type='submit') #{ t('instructor.search_button') }
+
+      .mb-6
+      // Danh sách instructors
+      ul.list-none.p-0
+        each instructor in instructors
+          li.mb-4
+            .flex.items-center.justify-between
+              a.block.rounded-lg.p-4.bg-gray-50.shadow-md.transition-all.duration-300.ease-in-out.cursor-pointer.flex-grow(
+                class='hover:shadow-xl hover:scale-105',
+                href=`/admin/instructor-detail/${instructor.id}`
+              )
+                .flex.items-center
+                  .w-24.h-24.rounded-full.mr-4.overflow-hidden
+                    if instructor.avatar_url
+                      img.w-full.h-full.object-cover(
+                        src=instructor.avatar_url,
+                        alt=instructor.name
+                      )
+                    else
+                      img.w-full.h-full.object-cover(
+                        src='/images/default_avatar.png',
+                        alt=instructor.name
+                      )
+                  .flex-1
+                    h3.font-semibold.mb-2= instructor.name
+                    p.text-sm.text-gray-600.mb-4= instructor.email || ''
+                    p.text-sm.text-gray-600.mb-4= instructor.about || ''
+                    .text-sm.text-gray-500
+                      span= `${t('admin.manage')}: ${instructor.numberOfCourse} ${t('admin.courses')}`
+              .mr-6
+              // Nút Delete
+              form.inline.delete-form(
+                action=`/admin/instructors/${instructor.id}/delete`,
+                method='post'
+              )
+                button.bg-red-500.text-white.rounded-lg.px-4.py-2.hover-bg-red-600.transition(
+                  type='submit'
+                ) #{ t('instructor.delete_button') }
+
+  script(src='/javascripts/admin-confirm.js')

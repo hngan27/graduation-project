@@ -1,0 +1,65 @@
+extends ../layout
+
+block content
+  h1 #{ title }
+
+  form(method='POST')
+    .mb-3
+      label(for='name') #{ t('user.detail.name') }
+      input#name.form-control(
+        type='text',
+        placeholder='Cao Thi Phuong Anh',
+        name='name',
+        required,
+        value=user ? user.name : ''
+      )
+    .mb-3
+      label(for='email') #{ t('user.detail.email') }
+      input#email.form-control(
+        type='email',
+        placeholder='example@gmail.com',
+        name='email',
+        required,
+        value=user ? user.email : ''
+      )
+    .mb-3
+      label(for='username') #{ t('user.detail.username') }
+      input#username.form-control(
+        type='username',
+        placeholder='abc',
+        name='username',
+        required,
+        value=user ? user.username : ''
+      )
+    .mb-3
+      label(for='birthday') #{ t('user.detail.birthday') }
+      input#birthday.form-control(
+        type='date',
+        name='birthday',
+        required,
+        value=user ? user.birthday : ''
+      )
+    .mb-3
+      label(for='avatar') #{ t('user.detail.avatar') }
+      input#avatar.form-control(
+        type='file',
+        name='avatar',
+        required,
+        value=user ? user.avatar_url : ''
+      )
+    .mb-3.input-group
+      label.input-group-text(for='role') #{ t('user.detail.role') }
+      select#role.form-select
+        option(
+          value=UserRole.ADMIN,
+          selected=user ? user.role === UserRole.ADMIN : true
+        ) #{ UserRole.ADMIN }
+        option(
+          value=UserRole.INSTRUCTOR,
+          selected=user ? user.role === UserRole.INSTRUCTOR : false
+        ) #{ UserRole.INSTRUCTOR }
+        option(
+          value=UserRole.STUDENT,
+          selected=user ? user.role === UserRole.STUDENT : false
+        ) #{ UserRole.STUDENT }
+  button.btn.btn-primary.mb(type='submit') #{ t('common.submit') }

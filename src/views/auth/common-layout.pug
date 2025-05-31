@@ -1,0 +1,43 @@
+doctype html
+html
+  head
+    title Go4ITMastery
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/global.css')
+    link(
+      rel='stylesheet',
+      href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
+    )
+    link(rel='icon', type='image/png', href='/icons/logo1.png')
+
+  body.m-0.p-0
+    nav.relative.bg-brand-primary.border-gray-200.z-10(class='dark:bg-gray-900')
+      .max-w-screen-xl.flex.flex-wrap.items-center.justify-between.mx-auto.p-2
+        a.flex.items-center.space-x-3(href='/', class='rtl:space-x-reverse')
+          img.h-16.w-auto(src='/icons/logo.png', alt='Go4ITMastery Logo')
+          span.self-center.text-2xl.font-semibold.whitespace-nowrap(
+            class='dark:text-white'
+          ) 
+          .border-l.border-gray-300.h-5
+          span.text-lg.font-medium(class='text-white')
+            | #{ t('login.title') }
+
+        // Language Selector
+        .ml-auto.flex.items-center.space-x-6
+          a.flex.text-white.items-center(href='?lng=en')
+            img.flag.w-6.h-4.mr-4(
+              src='/images/eng-flag.png',
+              alt='English Flag'
+            )
+            | #{ t('english') }
+          .border-l.border-gray-300.h-4
+          a.flex.text-white.items-center(href='?lng=vi')
+            img.flag.w-6.h-4.mr-4(
+              src='/images/vietnam-flag.png',
+              alt='Vietnamese Flag'
+            )
+            | #{ t('vietnamese') }
+
+    block content

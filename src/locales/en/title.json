@@ -1,0 +1,23 @@
+{
+  "title": {
+    "home": "Home",
+    "instructors": "Mentors",
+    "list_instructor": "List Mentors",
+    "students": "Mentees",
+    "list_student": "List Mentee",
+    "courses": "Courses",
+    "list_course": "List Course",
+    "user_detail": "User Detail",
+    "course_detail": "Course Detail",
+    "profile": "User Profile",
+    "my_courses": "My Courses",
+    "list_lesson": "List Lesson",
+    "lesson_detail": "Lesson Detail",
+    "create_course": "Add New Course",
+    "edit_course": "Edit Course",
+    "verify_account": "Verify Account"
+  },
+  "message": {
+    "found_results": "Found {{count}} results for the keyword '{{keyword}}'"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "course": {
+    "completed": "course.completed"
+  },
+  "common": {
+    "all": "common.all",
+    "allCourses": "common.allCourses"
+  }
+}

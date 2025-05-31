@@ -1,0 +1,35 @@
+extends index
+
+block content
+  .bg-white.p-8.shadow-lg.rounded-lg
+    h2.text-2xl.font-bold.mb-6 #{ t('sidebar.list_courses') }
+
+    // Search form
+    form.mb-6.flex.items-center.gap-4(method='GET', action='')
+      input.form-input.border.rounded.px-4.py-2.w-64(
+        type='text',
+        name='q',
+        value=typeof q !== 'undefined' ? q : '',
+        placeholder='Search courses...'
+      )
+      button.bg-blue-500.text-white.px-4.py-2.rounded(type='submit') Search
+
+    .grid.grid-cols-1.gap-6(class='md:grid-cols-2 lg:grid-cols-3')
+      each course in courses
+        .bg-white.shadow-md.rounded-lg.overflow-hidden
+          a.block.cursor-pointer.transform.transition-transform(class='hover:scale-105')(
+            href=`/courses/${course.id}`
+          )
+            .flex.justify-center.items-center.h-48.bg-gray-100
+              img.h-full(
+                src=course.image_url || '/images/course.png',
+                alt=course.name
+              )
+            .p-4.flex.flex-col.flex-1
+              h3.font-semibold.text-lg.mb-2= course.name
+              p.text-sm.text-gray-600.mb-4= course.description
+          .p-4.bg-gray-50.flex.justify-between.items-center.text-sm.text-gray-500
+            a.hover-underline(
+              href=`/admin/instructor-detail/${course.instructor.id}`
+            )= course.instructor.name
+            span= `${course.studentCount} ${t('courseDetails.students')}`

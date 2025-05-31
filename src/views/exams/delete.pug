@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  a.flex.items-center.text-blue-600(
+    class='hover:text-blue-800',
+    href=`/courses/${courseID}/manage`
+  )
+    svg.w-6.h-6.mr-2(
+      xmlns='http://www.w3.org/2000/svg',
+      viewBox='0 0 24 24',
+      fill='none',
+      stroke='currentColor',
+      stroke-width='2',
+      stroke-linecap='round',
+      stroke-linejoin='round'
+    )
+      circle(cx='12', cy='12', r='10')
+      polyline(points='12 8 8 12 12 16')
+      line(x1='16', y1='12', x2='8', y2='12')
+    span #{ t('common.back') }
+
+  .flex.flex-col.justify-center.items-center.w-full
+    h1.text-3xl.font-bold.p-8= title
+
+    .border.rounded-lg.p-4.space-y-4.w-2/3
+      p.text-lg.text-center #{ t('exam.deleteConfirmMessage') }
+      form(method='POST', action=action)
+        button.mb.px-4.mx-auto.block.text-sm.bg-red-500.text-white.rounded(
+          type='submit'
+        ) #{ t('common.delete') } 

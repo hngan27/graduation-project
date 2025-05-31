@@ -1,0 +1,51 @@
+course_id,text
+70c029fd-edd5-4a65-a45a-29ef9f5ea981,Node.js for Beginners Learn the basics of Node.js. frontend backend beginner
+b1a00110-aaaa-4db1-0017-111111111111,Mobile App Dev with Flutter Mobile App Dev with Flutter mobile intermediate
+b1a00110-aaaa-4db1-0018-111111111111,Spring Boot Crash Course Spring Boot Crash Course backend beginner
+b1a00110-aaaa-4db1-0019-111111111111,AI for Everyone AI for Everyone machine-learning artificial-intelligence beginner
+b1a00110-aaaa-4db1-0020-111111111111,Advanced Kubernetes Advanced Kubernetes data-science expert
+b1a00110-aaaa-4db1-0021-111111111111,CI/CD with GitLab DevOps pipelines with GitLab. 
+b1a00110-aaaa-4db1-0022-111111111111,JavaScript Mastery Deep dive into modern JS. 
+b1a00110-aaaa-4db1-0023-111111111111,Intro to PostgreSQL Manage relational databases. 
+b1a00110-aaaa-4db1-0024-111111111111,Data Science with Python Analyze data using Pandas & NumPy. 
+b1a00110-aaaa-4db1-0025-111111111111,GCP Fundamentals Start building with Google Cloud. 
+b1a00110-aaaa-4db1-0026-111111111111,Intermediate React Context API  routing  and more. 
+b1a00110-aaaa-4db1-0027-111111111111,Intro to TypeScript Typed JavaScript for scalable apps. 
+b1a00110-aaaa-4db1-0028-111111111111,Building APIs with NestJS Structured backend in TypeScript. 
+b1a00110-aaaa-4db1-0029-111111111111,React Native Basics Mobile apps with React Native. 
+b1a00110-aaaa-4db1-0030-111111111111,Expert DevOps Practices Monitor  secure  and scale. 
+b1a00110-aaaa-4db1-0031-111111111111,Linux Essentials Master the basics of Linux for DevOps. 
+b1a00110-aaaa-4db1-0032-111111111111,Microservices with Spring Cloud Design scalable Java services. 
+b1a00110-aaaa-4db1-0033-111111111111,GraphQL for Beginners Build modern APIs with GraphQL. 
+b1a00110-aaaa-4db1-0034-111111111111,CI/CD with Jenkins Automate builds and deploys. 
+b1a00110-aaaa-4db1-0035-111111111111,Vue.js Crash Course Quick start with Vue.js framework. 
+b1a00110-aaaa-4db1-0036-111111111111,Angular from Scratch Master Angular fundamentals. 
+b1a00110-aaaa-4db1-0037-111111111111,AI with TensorFlow Train deep learning models. 
+b1a00110-aaaa-4db1-0038-111111111111,Cybersecurity Fundamentals Protect systems and networks. 
+b1a00110-aaaa-4db1-0039-111111111111,Building REST APIs with FastAPI Modern Python backend with FastAPI. 
+b1a00110-aaaa-4db1-0040-111111111111,Next.js for Fullstack Development React + backend in one framework. 
+b1a00110-aaaa-4db1-0041-111111111111,Docker + Kubernetes Combo Real-world container orchestration. 
+b1a00110-aaaa-4db1-0042-111111111111,Intro to NLP Natural Language Processing basics. 
+b1a00110-aaaa-4db1-0043-111111111111,Monitoring with Prometheus & Grafana Track metrics like a pro. 
+b1a00110-aaaa-4db1-0044-111111111111,Serverless Apps with AWS Lambda Code without servers. 
+b1a00110-aaaa-4db1-0045-111111111111,Advanced TypeScript Patterns Write safe and scalable TypeScript. 
+b1a00110-aaaa-4db1-0046-111111111111,Python Scripting for Automation Automate tasks using Python. 
+b1a00110-aaaa-4db1-0047-111111111111,Realtime Apps with Socket.io Build chat and live systems. 
+b1a00110-aaaa-4db1-0048-111111111111,Mobile Dev with SwiftUI iOS development made easy. 
+b1a00110-aaaa-4db1-0049-111111111111,Database Optimization Techniques Boost SQL performance. 
+b1a00110-aaaa-4db1-0050-111111111111,Design Patterns in Software Engineering Reusable solutions to common problems. 
+c10d1e4f1-223b-4cdd-9f0e-0123456789a,Advanced React Dive deep into React hooks and performance. frontend advanced
+c11d1e4f1-223b-4cdd-9f0e-0123456789a,Introduction to Docker Containerize your apps with Docker. backend beginner
+c12d1e4f1-223b-4cdd-9f0e-0123456789a,Kubernetes in Practice Deploy and scale apps with K8s. fullstack expert
+c13d1e4f1-223b-4cdd-9f0e-0123456789a,Fullstack Web Development Learn frontend and backend together. fullstack intermediate
+c14d1e4f1-223b-4cdd-9f0e-0123456789a,Python for Data Science Use Python for data analysis and visualization. data-science beginner
+c15d1e4f1-223b-4cdd-9f0e-0123456789a,AWS Essentials Learn the basics of AWS cloud. cloud aws intermediate
+c1d1e4f1-223b-4cdd-9f0e-0123456789ab,DevOps Pipeline CI/CD with Jenkins  Docker  and Git. devops advanced
+c2d1e4f1-223b-4cdd-9f0e-0123456789ab,Frontend Mastery Advanced techniques in modern frontend. frontend intermediate
+c3d1e4f1-223b-4cdd-9f0e-0123456789ab,Agile Methodology Scrum and Agile workflows. 
+c4d1e4f1-223b-4cdd-9f0e-0123456789ab,REST API with Express Build scalable APIs with Express.js. backend fullstack advanced
+c5d1e4f1-223b-4cdd-9f0e-0123456789ab,Intro to Git & GitHub Version control for modern developers. git beginner
+c6d1e4f1-223b-4cdd-9f0e-0123456789ab,Terraform from Scratch IaC with Terraform basics. 
+c7d1e4f1-223b-4cdd-9f0e-0123456789ab,Machine Learning Basics Understand ML concepts & models. machine-learning beginner
+c8d1e4f1-223b-4cdd-9f0e-0123456789ab,Secure Coding Practices Build secure apps by design. 
+c9d1e4f1-223b-4cdd-9f0e-0123456789ab,Cloud Computing with Azure Get started with Azure services. 

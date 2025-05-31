@@ -1,0 +1,63 @@
+extends index
+
+block content
+  .max-w-2xl.mx-auto.bg-white.shadow-lg.rounded-lg.p-6
+    .grid.grid-cols-2.gap-4
+      .flex.flex-col.items-center.justify-center
+        .flex.items-center.space-x-4
+          .w-24.h-24.rounded-full.mr-4.overflow-hidden.flex-shrink-0
+            if student.avatar_url
+              img.w-full.h-full.object-cover(
+                src=student.avatar_url,
+                alt=student.name
+              )
+            else
+              img.w-full.h-full.object-cover(
+                src='/images/student.png',
+                alt=student.name
+              )
+        .mt-4
+        h2.text-2xl.font-bold.mb-2.text-center= student.name
+        p.text-sm.text-gray-500.text-center= student.email
+      div
+        .mt-4
+        ul
+          li.mt-2
+            strong= t('user.detail.name') + ': '
+            | #{ student.name }
+          li.mt-2
+            strong= t('user.detail.role') + ': '
+            | #{ t('common.mentee') }
+          li.mt-2
+            strong= t('user.detail.birthday') + ': '
+            | #{ student.birthday ? new Date(student.birthday).toLocaleDateString('en-GB') : t('user.detail.not_available') }
+          li.mt-2
+            strong= t('user.detail.phone') + ': '
+            | #{ student.phone || t('user.detail.not_available') }
+
+  .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6.mt-6
+    .mb-6
+      h2.text-xl.font-bold.mb-4 #{ t('user.detail.specialization') }
+      p.text-gray-600.text-justify= student.specialization || t('user.detail.not_available')
+    .mb-6
+      h2.text-xl.font-bold.mb-4 #{ t('user.detail.about') }
+      p.text-gray-600.text-justify= student.about || t('user.detail.not_available')
+    .mb-6
+    h2.text-xl.font-bold.mb-4= t('user.detail.courses')
+    .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+      each item in courses
+        a.block.bg-white.shadow-md.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+          href=`/courses/${item.course.id}`
+        )
+          .rounded-lg.overflow-hidden
+            .flex.justify-center.items-center.h-48
+              img.h-full(
+                src=item.course.image_url || '/images/course.png',
+                alt=item.course.name
+              )
+          .p-4
+            h3.font-semibold.mb-2= item.course.name
+            p.text-sm.text-gray-600.mb-2= item.course.description
+            .flex.justify-between.items-center.text-sm.text-gray-500
+              span= `${item.course.level} • ${item.course.duration}`
+              span.text-sm.text-teal-600.font-bold= item.progress + '%'

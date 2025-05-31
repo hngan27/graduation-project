@@ -1,0 +1,64 @@
+extends index
+
+block content
+  .max-w-xl.mx-auto.bg-white.p-8.rounded-lg.shadow-md
+    h1.text-2xl.font-bold.mb-6.text-center= t('admin.create_user.title')
+
+    form(method='POST', action='/admin/users/create')
+      // Name
+      .mb-4
+        label.block.text-gray-700.font-medium.mb-2(for='name')= t('admin.create_user.form.name')
+        input#name(
+          class='border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-400',
+          type='text',
+          name='name',
+          required,
+          value=(attribute && attribute.name) || ''
+        )
+        if errors && errors.find(e => e.param === 'name')
+          p.text-red-500.text-sm.mt-1= t('admin.create_user.validation.name_required')
+
+      // Email
+      .mb-4
+        label.block.text-gray-700.font-medium.mb-2(for='email')= t('admin.create_user.form.email')
+        input#email(
+          class='border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-400',
+          type='email',
+          name='email',
+          required,
+          value=(attribute && attribute.email) || ''
+        )
+        if errors && errors.find(e => e.param === 'email')
+          p.text-red-500.text-sm.mt-1= t('admin.create_user.validation.email_invalid')
+
+      // Role
+      .mb-6
+        label.block.text-gray-700.font-medium.mb-2(for='role')= t('admin.create_user.form.role')
+        select#role(
+          class='border border-gray-300 rounded-lg p-3 w-full bg-white focus:outline-none focus:ring-2 focus:ring-blue-400',
+          name='role',
+          required
+        )
+          option(value='')= t('admin.create_user.form.select_role')
+          option(
+            value='Instructor',
+            selected=(attribute && attribute.role === 'Instructor') ? true : undefined
+          )= t('roles.instructor')
+          option(
+            value='Student',
+            selected=(attribute && attribute.role === 'Student') ? true : undefined
+          )= t('roles.student')
+        if errors && errors.find(e => e.param === 'role')
+          p.text-red-500.text-sm.mt-1= t('admin.create_user.validation.role_required')
+
+      // Submit Button
+      button(
+        class='bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg w-full transition duration-300 ease-in-out',
+        type='submit'
+      )= t('admin.create_user.form.submit')
+
+      // Error list if any
+      if errors && errors.length
+        ul.text-red-500.mt-6
+          each err in errors
+            li= err.msg

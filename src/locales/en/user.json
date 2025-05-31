@@ -1,0 +1,43 @@
+{
+  "user": {
+    "user": "User",
+    "userManager": "User Manager",
+    "detail": {
+      "name": "Name",
+      "username": "Username",
+      "email": "Email",
+      "role": "Role",
+      "birthday": "Birthday",
+      "avatar": "Avatar",
+      "about": "About",
+      "phone": "Phone",
+      "major": "Major",
+      "courses": "Their courses",
+      "see_all": "See all"
+    },
+    "action": {
+      "add": "Add user"
+    }
+  },
+  "profile": {
+    "title": "User Profile",
+    "email": "Email",
+    "phone": "Phone",
+    "about": "About",
+    "birthday": "Birthday",
+    "not_available": "N/A",
+    "update_button": "Update Profile",
+    "avatar": "Avatar",
+    "name": "Name"
+  },
+  "title": {
+    "update_profile": "Update Profile"
+  },
+  "error": {
+    "user_not_authenticated": "User not authenticated",
+    "user_not_found": "User not found"
+  },
+  "success": {
+    "profile_updated": "Profile updated successfully"
+  }
+}

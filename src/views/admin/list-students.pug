@@ -1,0 +1,70 @@
+extends index
+
+block content
+  .mb-6
+    .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+      .flex.justify-between.items-center.mb-6
+        h2.text-xl.font-bold #{ t('student.list_title') }
+        a.bg-blue-500.text-white.px-4.py-2.rounded-lg.transition(
+          href='/admin/users/create?role=Student'
+        ) #{ t('admin.create_user.title') }
+
+      if error_message
+        p.error-message.text-red-500.text-center.mb-4= error_message
+
+      if success_message
+        p.success-message.text-green-500.text-center.mb-4= success_message
+
+      .flex.justify-end
+        form.flex.items-center(action='/admin/list-students', method='get')
+          input.border.rounded-lg.p-2.mr-2(
+            type='text',
+            name='search',
+            value=searchQuery,
+            placeholder=t('student.search_placeholder')
+          )
+          button.bg-green-500.text-white.rounded-lg.px-4.py-2(type='submit') #{ t('student.search_button') }
+
+      .mb-6
+      ul.list-none.p-0
+        each student in students
+          li.mb-4
+            .flex.items-center.justify-between
+              a.block.rounded-lg.p-4.bg-gray-50.shadow-md.transition-all.duration-300.ease-in-out.flex-grow(
+                class='hover:shadow-xl hover:scale-105',
+                href=`/admin/student-detail/${student.id}`
+              )
+                .flex.items-center
+                  .w-24.h-24.rounded-full.mr-4.overflow-hidden
+                    if student.avatar_url
+                      img.w-full.h-full.object-cover(
+                        src=student.avatar_url,
+                        alt=student.name
+                      )
+                    else
+                      img.w-full.h-full.object-cover(
+                        src='/images/student.png',
+                        alt=student.name
+                      )
+                  .flex-1
+                    h3.font-semibold.mb-2= student.name
+                    p.text-sm.text-gray-600.mb-4= student.email || t('student.no_description')
+
+              .mr-6
+              .flex.gap-2.items-center
+                span.flex.items-center.gap-1.bg-green-100.text-green-700.text-xs.font-semibold.px-3.py-1.rounded-full
+                  i.fas.fa-check-circle
+                  | #{ t('student.completed') }: #{ student.completedCourses || 0 }
+                span.flex.items-center.gap-1.bg-blue-100.text-blue-700.text-xs.font-semibold.px-3.py-1.rounded-full
+                  i.fas.fa-spinner
+                  | #{ t('student.inprogress') }: #{ student.inProgressCourses || 0 }
+
+              form.inline.delete-form(
+                action=`/admin/students/${student.id}/delete`,
+                method='post'
+              )
+                button.bg-red-500.text-white.rounded-lg.px-4.py-2.hover-bg-red-600.transition(
+                  type='submit'
+                ) #{ t('student.delete_button') }
+
+  script(src='/javascripts/admin-confirm.js')

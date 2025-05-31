@@ -1,0 +1,77 @@
+extends ../layout
+
+block content
+  a.flex.items-center.text-blue-600(
+    class='hover:text-blue-800',
+    href=`/courses/${courseID}/exam`
+  )
+    svg.w-6.h-6.mr-2(
+      xmlns='http://www.w3.org/2000/svg',
+      viewBox='0 0 24 24',
+      fill='none',
+      stroke='currentColor',
+      stroke-width='2',
+      stroke-linecap='round',
+      stroke-linejoin='round'
+    )
+      circle(cx='12', cy='12', r='10')
+      polyline(points='12 8 8 12 12 16')
+      line(x1='16', y1='12', x2='8', y2='12')
+    span #{ t('exam.backToExam') }
+
+  if exam.time_limit
+    .flex.justify-end.items-center.mb-4
+      span.font-medium #{ t('exam.timeRemaining') }:
+      span#timer.text-xl.font-bold
+
+  if questions
+    form.bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4(
+      method='post',
+      class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'
+    )
+      .p-6.w-full
+        .pb-2
+          .text-3xl.text-center.font-semibold.mb-2 #{ exam.name }
+          .flex.justify-between
+            .text-gray-600 #{ t('exam.total') }: #{ questions.length }
+            .text-gray-600 #{ t('exam.time') }: #{ exam.time_limit } #{ t('common.minutes') }
+        p.mt-2.text-sm.text-gray-500.leading-relaxed
+          each question, index in questions
+            .mb-6
+              p.font-bold.text-lg.mt-2 #{ index + 1 }. #{ question.content }
+            each option, index in question.options? question.options : ['There are no option!']
+              .mb-4.flex.gap-2
+                input(
+                  type='radio',
+                  name=question.id,
+                  value=option.id,
+                  checked=selectedAnswers && selectedAnswers[question.id] === option.id,
+                  onchange=`saveAnswer(this, '${courseID}', '${exam.id}')`
+                )
+                div #{ option.content }
+        .flex.justify-center
+          button.mt-4.px-5.rounded-lg.text-white.text-sm.tracking-wider.border-none.outline-none.bg-blue-600(
+            type='submit',
+            class='py-2.5 hover:bg-blue-700'
+          ) #{ t('common.submit') }
+
+  script(src='/javascripts/exam.js')
+  script.
+    (function(){
+      var timeLimit = #{exam.time_limit} * 60;
+      var timerEl = document.getElementById('timer');
+      if (!timerEl) return;
+      var remaining = timeLimit;
+      function updateTimer(){
+        var mins = Math.floor(remaining / 60);
+        var secs = remaining % 60;
+        timerEl.textContent = mins + ':' + (secs < 10 ? '0' + secs : secs);
+        if (remaining <= 0) {
+          clearInterval(interval);
+        } else {
+          remaining--;
+        }
+      }
+      updateTimer();
+      var interval = setInterval(updateTimer, 1000);
+    })();

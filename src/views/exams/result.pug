@@ -1,0 +1,108 @@
+extends ../layout
+
+block content
+  a.flex.items-center.text-blue-600(
+    class='hover:text-blue-800',
+    href=`/courses/${courseID}/exam`
+  )
+    svg.w-6.h-6.mr-2(
+      xmlns='http://www.w3.org/2000/svg',
+      viewBox='0 0 24 24',
+      fill='none',
+      stroke='currentColor',
+      stroke-width='2',
+      stroke-linecap='round',
+      stroke-linejoin='round'
+    )
+      circle(cx='12', cy='12', r='10')
+      polyline(points='12 8 8 12 12 16')
+      line(x1='16', y1='12', x2='8', y2='12')
+    span #{ t('exam.backToExam') }
+
+  if gradeId
+    form.bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4.p-4(
+      method='post',
+      class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'
+    )
+      .mb-4
+        label.block.text-gray-700.text-xl.font-bold.mb-2.text-center(
+          for='feedback'
+        ) #{ t('exam.feedback') }
+        textarea#feedback.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+          class='focus:outline-none focus:shadow-outline',
+          name='feedback',
+          rows='4',
+          required
+        )= grade ? grade.feedback : ''
+      button.mb.px-4.mx-auto.block.text-sm.bg-blue-700.text-white.rounded.w-fit(
+        type='submit',
+        class='py-2.5 hover:bg-blue-600'
+      ) #{ t('common.submit') }
+  if detailAnswers
+    .bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4(
+      class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'
+    )
+      .p-6.w-full
+        .pb-2
+          .text-3xl.text-center.font-semibold.mb-2 #{ exam.name }
+          .flex.justify-between
+            .text-sm.text-gray-600 #{ t('exam.total') }: #{ detailAnswers.length }
+            .text-sm.text-gray-600.font-bold #{ t('exam.score') }: #{ score } / #{ detailAnswers.length }
+        p.mt-2.text-sm.text-gray-500.leading-relaxed
+          each answer, index in detailAnswers
+            .mb-6.flex.items-center.gap-2.font-bold.text-lg
+              p #{ index + 1 }. #{ answer.question.content }
+              if answer.option && answer.option.is_correct
+                svg.bi.bi-check-circle-fill(
+                  xmlns='http://www.w3.org/2000/svg',
+                  width='16',
+                  height='16',
+                  fill='#22c55e',
+                  viewBox='0 0 16 16'
+                )
+                  path(
+                    d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'
+                  )
+              else
+                svg.bi.bi-x-circle-fill(
+                  xmlns='http://www.w3.org/2000/svg',
+                  width='16',
+                  height='16',
+                  fill='#f43f5e',
+                  viewbox='0 0 16 16'
+                )
+                  path(
+                    d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z'
+                  )
+
+            each option, index in answer.question.options? answer.question.options : ['There are no option!']
+              .mb-4.flex.gap-2.items-center
+                input(
+                  type='radio',
+                  name=answer.question.id,
+                  value=option.id,
+                  checked=answer.option && answer.option.id === option.id
+                )
+                div #{ option.content }
+                if option && option.is_correct
+                  svg.bi.bi-check-circle-fill(
+                    xmlns='http://www.w3.org/2000/svg',
+                    width='16',
+                    height='16',
+                    fill='#22c55e',
+                    viewBox='0 0 16 16'
+                  )
+                    path(
+                      d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'
+                    )
+                else if answer.option && answer.option.id === option.id && !option.is_correct
+                  svg.bi.bi-x-circle-fill(
+                    xmlns='http://www.w3.org/2000/svg',
+                    width='16',
+                    height='16',
+                    fill='#f43f5e',
+                    viewbox='0 0 16 16'
+                  )
+                    path(
+                      d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z'
+                    )

@@ -1,0 +1,43 @@
+{
+  "user": {
+    "user": "Người dùng",
+    "userManager": "Quản lý người dùng",
+    "detail": {
+      "name": "Họ và tên",
+      "username": "Tên đăng nhập",
+      "email": "Email",
+      "role": "Vai trò",
+      "birthday": "Ngày sinh",
+      "avatar": "Ảnh đại diện",
+      "about": "Giới thiệu",
+      "phone": "Số điện thoại",
+      "major": "Chuyên ngành",
+      "courses": "Các khóa học",
+      "see_all": "Xem tất cả"
+    },
+    "action": {
+      "add": "Thêm người dùng"
+    }
+  },
+  "profile": {
+    "title": "Thông tin cá nhân",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "about": "Giới thiệu",
+    "birthday": "Ngày sinh",
+    "not_available": "N/A",
+    "update_button": "Cập nhật thông tin",
+    "avatar": "Ảnh đại diện",
+    "name": "Tên"
+  },
+  "title": {
+    "update_profile": "Cập nhật trang cá nhân"
+  },
+  "error": {
+    "user_not_authenticated": "Người dùng chưa được xác thực",
+    "user_not_found": "Người dùng không được tìm thấy"
+  },
+  "success": {
+    "profile_updated": "Cập nhật hồ sơ thành công"
+  }
+}

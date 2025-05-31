@@ -1,0 +1,130 @@
+extends ../layout
+
+block content
+  if current_user
+    #learning.max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+      .flex.justify-between.items-center.mb-6
+        h2.text-xl.font-bold #{ t('common.myCourses') }
+        if current_user.role === UserRole.INSTRUCTOR
+          a.text-sm.text-blue-500.px-3.py-2.border-2.border-blue-600.rounded(
+            href='/courses/create',
+            class='hover:text-blue-800 hover:bg-blue-100'
+          ) #{ t('course.newCourse') }
+
+      // Filters
+      .mb-4.flex.space-x-4
+        select#levelFilter.border-2.border-black.rounded.px-2.py-1(
+          onchange='filterMyCourses()'
+        )
+          option(value='') #{ t('course.allLevels') }
+          each value, key in CourseLevel
+            option(value=value, selected=levelFilter === value ? true : false)= key
+
+        select#statusFilter.border-2.border-black.rounded.px-2.py-1.uppercase(
+          onchange='filterMyCourses()',
+          class=current_user.role === UserRole.INSTRUCTOR ? 'hidden' : ''
+        )
+          option(value='') #{ t('course.allStatus') }
+          each value, key in EnrollStatus
+            option(value=value, selected=statusFilter === value)= key
+          option(value='Not Started', selected=statusFilter === 'Not Started') NOT STARTED
+          option(value='In Progress', selected=statusFilter === 'In Progress') IN PROGRESS
+          option(value='Completed', selected=statusFilter === 'Completed') COMPLETED
+
+      .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+        each course in myCourses
+          a.block.bg-white.shadow-md.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+            class='hover:shadow-xl hover:scale-105',
+            href=`/courses/${course.id}`
+          )
+            .rounded-lg.overflow-hidden
+              .flex.justify-center.items-center.h-48
+                img.h-full(
+                  src=course.image_url === null ? '/images/course.png' : course.image_url,
+                  alt='Image'
+                )
+              .p-4
+                h3.font-semibold.mb-2= course.name
+                p.text-sm.text-gray-600.mb-4= course.description
+                .flex.justify-between.items-center.text-sm.text-gray-500
+                  span= `${course.level} • ${course.duration}`
+                  if current_user.role === UserRole.INSTRUCTOR
+                    span= `${course.studentCount} ${t('courseDetails.students')}`
+                  if course.enrollStatus
+                    case course.enrollStatus
+                      when EnrollStatus.PENDING
+                        span.text-xs.font-bold.bg-purple-100.text-purple-800.px-2.py-1.rounded-full= course.enrollStatus
+                      when EnrollStatus.APPROVED
+                        span.text-xs.font-bold.bg-green-100.text-green-800.px-2.py-1.rounded-full= course.enrollStatus
+                      when EnrollStatus.REJECTED
+                        span.text-xs.font-bold.bg-red-100.text-red-800.px-2.py-1.rounded-full= course.enrollStatus
+  if !current_user || current_user.role !== UserRole.INSTRUCTOR
+    .mb-6
+    #recommend.max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+      .flex.justify-between.items-center.mb-6
+        h2.text-xl.font-bold #{ t('common.recommend') }
+      .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+        each course in courseRecommends.slice(0, 6)
+          a.block.bg-white.shadow-md.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+            class='hover:shadow-xl hover:scale-105',
+            href=`/courses/${course.id}`
+          )
+            .rounded-lg.overflow-hidden
+              .flex.justify-center.items-center.h-48
+                img.h-full(
+                  src=course.image_url === null ? '/images/course.png' : course.image_url,
+                  alt='Image'
+                )
+              .p-4
+                h3.font-semibold.mb-2= course.name
+                p.text-sm.text-gray-600.mb-4= course.description
+                .flex.justify-between.items-center.text-sm.text-gray-500
+                  span= `${course.level} • ${course.duration}`
+                  span= `${course.studentCount} ${t('courseDetails.students')}`
+    .mb-6
+    #newestCourse.max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+      .flex.justify-between.items-center.mb-6
+        h2.text-xl.font-bold #{ t('common.newestCourse') }
+      .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+        each course in newestCourses.slice(0, 6)
+          a.block.bg-white.shadow-md.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+            class='hover:shadow-xl hover:scale-105',
+            href=`/courses/${course.id}`
+          )
+            .rounded-lg.overflow-hidden
+              .flex.justify-center.items-center.h-48
+                img.h-full(
+                  src=course.image_url === null ? '/images/course.png' : course.image_url,
+                  alt='Image'
+                )
+              .p-4
+                h3.font-semibold.mb-2= course.name
+                p.text-sm.text-gray-600.mb-4= course.description
+                .flex.justify-between.items-center.text-sm.text-gray-500
+                  span= `${course.level} • ${course.duration}`
+                  span= `${course.studentCount} ${t('courseDetails.students')}`
+    // All Courses section
+    .mb-6
+    #allCourses.mb-6
+      .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+        .flex.justify-between.items-center.mb-6
+          h2.text-xl.font-bold #{ t('course.allCourses') }
+        .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+          each course in allCourses
+            a.block.bg-white.shadow-md.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+              class='hover:shadow-xl hover:scale-105',
+              href=`/courses/${course.id}`
+            )
+              .rounded-lg.overflow-hidden
+                .flex.justify-center.items-center.h-48
+                  img.h-full(
+                    src=course.image_url === null ? '/images/course.png' : course.image_url,
+                    alt='Image'
+                  )
+              .p-4
+                h3.font-semibold.mb-2= course.name
+                p.text-sm.text-gray-600.mb-4= course.description
+                .flex.justify-between.items-center.text-sm.text-gray-500
+                  span= `${course.level} • ${course.duration}`
+                  span= `${course.studentCount} ${t('courseDetails.students')}`
+    script(src='/javascripts/filter.js')

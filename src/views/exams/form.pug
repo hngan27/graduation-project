@@ -1,0 +1,61 @@
+extends ../layout
+
+block content
+  a.flex.items-center.text-blue-600(
+    class='hover:text-blue-800',
+    href=`/courses/${courseID}/manage`
+  )
+    svg.w-6.h-6.mr-2(
+      xmlns='http://www.w3.org/2000/svg',
+      viewBox='0 0 24 24',
+      fill='none',
+      stroke='currentColor',
+      stroke-width='2',
+      stroke-linecap='round',
+      stroke-linejoin='round'
+    )
+      circle(cx='12', cy='12', r='10')
+      polyline(points='12 8 8 12 12 16')
+      line(x1='16', y1='12', x2='8', y2='12')
+    span #{ t('common.back') }
+
+  .flex.flex-col.justify-center.items-center.w-full
+    h1.text-3xl.font-bold.p-8= title
+
+    form.border.rounded-lg.p-4.space-y-4(method='POST', action=action, class='w-2/3')
+      .my-4
+        label(for='name') #{ t('exam.name') }
+        input#name.py-3.w-full.text-sm.border.rounded.transition-all.px-4(
+          type='text',
+          name='name',
+          required,
+          value=exam ? exam.name : ''
+        )
+      .my-4
+        label(for='description') #{ t('exam.description') }
+        textarea#description.py-3.w-full.text-sm.border.rounded.transition-all.px-4(
+          name='description',
+          rows='4'
+        )= exam ? exam.description : ''
+      .my-4
+        label(for='time_limit') #{ t('exam.time') } (#{ t('common.minutes') })
+        input#time_limit.py-3.w-full.text-sm.border.rounded.transition-all.px-4(
+          type='number',
+          name='time_limit',
+          min='1',
+          required,
+          value=exam ? exam.time_limit : ''
+        )
+      .my-4
+        label(for='attempt_limit') #{ t('exam.attemptLimit') }
+        input#attempt_limit.py-3.w-full.text-sm.border.rounded.transition-all.px-4(
+          type='number',
+          name='attempt_limit',
+          min='1',
+          required,
+          value=exam ? exam.attempt_limit : ''
+        )
+      button.btn.btn-primary.mb.px-4.mx-auto.block.text-sm.bg-blue-500.text-white.rounded(
+        type='submit',
+        class='!mt-8 py-2.5 hover:bg-blue-600 w-1/2'
+      ) #{ t('common.submit') } 

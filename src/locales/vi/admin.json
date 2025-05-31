@@ -1,0 +1,152 @@
+{
+  "success": {
+    "instructor_approved": "Giảng viên đã được phê duyệt thành công!",
+    "instructor_rejected": "Giảng viên đã bị từ chối thành công!",
+    "instructor_updated": "Thông tin giảng viên đã được cập nhật thành công!",
+    "instructor_deleted": "Giảng viên đã được xóa thành công!"
+  },
+  "error": {
+    "instructor_not_found": "Không tìm thấy giảng viên",
+    "cannot_delete_instructor_with_enrollments": "Không thể xóa giảng viên vì có khóa học có người đăng ký"
+  },
+  "dashboard": {
+    "title": "Bảng Điều Khiển"
+  },
+  "logo": {
+    "alt": "Logo SmartEdu",
+    "name": "SmartEdu"
+  },
+  "sidebar": {
+    "statistics": "Thống Kê",
+    "approve_instructor": "Duyệt Giảng Viên",
+    "list_instructors": "Danh Sách Người Hướng Dẫn",
+    "list_students": "Danh Sách Học Viên",
+    "list_courses": "Danh Sách Khóa Học",
+    "create_user": "Tạo Người Dùng"
+  },
+  "logout": "Đăng xuất",
+  "statistics": {
+    "title": "Thống Kê",
+    "total_courses_title": "Tổng Số Khóa Học",
+    "total_courses_description": "Tổng số khóa học",
+    "total_instructors_title": "Tổng Số Giảng Viên",
+    "total_instructors_description": "Tổng số giảng viên",
+    "pending_instructors_title": "Số Giảng Viên Đang Chờ Phê Duyệt",
+    "pending_instructors_description": "Số giảng viên đang chờ phê duyệt",
+    "total_enrollments_title": "Tổng số lượt đăng ký",
+    "total_enrollments_description": "Tổng số lượt đăng ký khóa học",
+    "enrollment_over_time_title": "Lượt đăng ký theo thời gian"
+  },
+  "instructor_details": {
+    "title": "Thông Tin Chi Tiết Giảng Viên",
+    "avatar_alt": "Avatar",
+    "email_label": "Email:",
+    "about_label": "Giới thiệu:",
+    "specialization_label": "Chuyên môn:",
+    "not_available": "N/A",
+    "back_to_list": "Quay lại danh sách"
+  },
+  "user": {
+    "detail": {
+      "avatar_alt": "Avatar",
+      "name": "Tên",
+      "role": "Vai trò",
+      "birthday": "Ngày sinh",
+      "phone": "Điện thoại",
+      "not_available": "N/A",
+      "specialization": "Chuyên môn",
+      "about": "Giới thiệu",
+      "courses": "Khóa học"
+    },
+    "edit_button": "Cập nhật giảng viên",
+    "delete_button": "Xóa giảng viên"
+  },
+  "course": {
+    "image_alt": "Hình ảnh khóa học"
+  },
+  "instructor": {
+    "list_title": "Giảng Viên",
+    "search_placeholder": "Tìm kiếm giảng viên...",
+    "search_button": "Tìm kiếm",
+    "no_description": "Không có mô tả",
+    "label": "Giảng viên",
+    "courses": "khóa học",
+    "update_button": "Cập nhật",
+    "delete_button": "Xóa",
+    "confirm_delete": "Bạn có chắc chắn muốn xóa giảng viên này không? Hành động này không thể hoàn tác."
+  },
+  "pending_instructors": {
+    "title": "Giảng Viên Đang Chờ Phê Duyệt",
+    "index": "STT",
+    "name": "Tên",
+    "email": "Email",
+    "actions": "Hành Động",
+    "accept": "Chấp nhận",
+    "reject": "Từ chối",
+    "no_instructors": "Không có giảng viên nào đang chờ phê duyệt."
+  },
+  "edit_instructor": {
+    "title": "Chỉnh Sửa Giảng Viên",
+    "avatar_alt": "Ảnh Đại Diện Giảng Viên",
+    "name_label": "Tên",
+    "email_label": "Email",
+    "about_label": "Giới Thiệu",
+    "specialization_label": "Chuyên Môn",
+    "phone_label": "Số Điện Thoại",
+    "avatar_label": "Hình Đại Diện",
+    "save_button": "Lưu Thay Đổi"
+  },
+  "edit_student": {
+    "title": "Chỉnh Sửa Học Viên",
+    "avatar_alt": "Ảnh Đại Diện Học Viên",
+    "name_label": "Tên",
+    "email_label": "Email",
+    "about_label": "Giới Thiệu",
+    "phone_label": "Số Điện Thoại",
+    "avatar_label": "Hình Đại Diện",
+    "save_button": "Lưu Thay Đổi"
+  },
+  "admin": {
+    "title": "Bảng Quản Trị",
+    "create_user": {
+      "title": "Tạo tài khoản mới",
+      "form": {
+        "name": "Họ và tên",
+        "email": "Địa chỉ email",
+        "role": "Vai trò người dùng",
+        "submit": "Tạo tài khoản",
+        "select_role": "Chọn vai trò"
+      },
+      "success_title": "Tạo tài khoản thành công",
+      "success_message": "Tài khoản đã được tạo và thông tin đăng nhập đã gửi qua email.",
+      "error_duplicate": "Email đã được đăng ký.",
+      "back_to_form": "Quay lại trang tạo tài khoản"
+    },
+    "manage": "Quản lý",
+    "courses": "khóa học"
+  },
+  "validation": {
+    "name_required": "Họ tên không được để trống.",
+    "email_required": "Email không được để trống.",
+    "email_invalid": "Email không hợp lệ.",
+    "role_required": "Vai trò không được để trống."
+  },
+  "roles": {
+    "student": "Học viên",
+    "instructor": "Giảng viên"
+  },
+  "student": {
+    "list_title": "Giảng Viên",
+    "search_placeholder": "Tìm kiếm học viên...",
+    "search_button": "Tìm kiếm",
+    "no_description": "Không có mô tả",
+    "label": "Học viên",
+    "courses": "khóa học",
+    "update_button": "Cập nhật",
+    "delete_button": "Xóa",
+    "confirm_delete": "Bạn có chắc chắn muốn xóa học viên này không? Hành động này không thể hoàn tác.",
+    "edit_title": "Chỉnh Sửa Học Viên",
+    "completed": "Đã hoàn thành",
+    "inprogress": "Đang tiến hành"
+  }
+}

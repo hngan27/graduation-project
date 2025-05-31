@@ -1,0 +1,10 @@
+{
+  "messages": "messages",
+  "search": "search",
+  "chatHistory": "chatHistory",
+  "notMessaged": "notMessaged",
+  "noSearchResults": "noSearchResults",
+  "online": "online",
+  "typeYourMessageHere": "typeYourMessageHere",
+  "sendMessage": "sendMessage"
+}

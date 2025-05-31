@@ -1,0 +1,82 @@
+extends layout
+
+block content
+  body
+    .max-w-4xl.mx-auto.bg-white.rounded-lg.p-6
+      h1.text-3xl.font-bold.mb-6 Add New Course
+      form.bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-4
+        .mb-4
+          label.block.text-gray-700.text-sm.font-bold.mb-2(for='name') Course Name
+          input#name.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            type='text',
+            name='name',
+            required
+          )
+
+        .mb-4
+          label.block.text-gray-700.text-sm.font-bold.mb-2(for='description') Description
+          textarea#description.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            name='description',
+            rows='4',
+            required
+          )
+
+        .mb-4
+          label.block.text-gray-700.text-sm.font-bold.mb-2(for='instructor') Instructor
+          select#instructor.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            name='instructor',
+            required
+          )
+            option(value='') Select an instructor
+            // Add options dynamically from your backend
+
+        .mb-4
+          label.block.text-gray-700.text-sm.font-bold.mb-2(for='subInstructor') Sub-Instructor
+          select#subInstructor.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            name='subInstructor'
+          )
+            option(value='') Select a sub-instructor (optional)
+            // Add options dynamically from your backend
+
+        .mb-4
+          label.block.text-gray-700.text-sm.font-bold.mb-2 Lessons
+          .container
+            .inline.pr-8
+              input#1.checkbox-input(
+                type='checkbox',
+                name='lessons',
+                value='1'
+              )
+              label(for='1') &nbsp; Lesson 1
+            .inline.pr-8
+              input#2.checkbox-input(
+                type='checkbox',
+                name='lessons',
+                value='2'
+              )
+              label(for='2') &nbsp; Lesson 2
+            // This section would be populated dynamically with available lessons
+            // Each lesson would have a checkbox
+
+        .mb-4
+          label.block.text-gray-700.text-sm.font-bold.mb-2(for='assignment') Assignment
+          select#assignment.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            name='assignment'
+          )
+            option(value='') Select an assignment (optional)
+            // Add options dynamically from your backend
+
+        .flex.justify-end.items-center.space-x-4.mt-6
+          button.inline-block.font-bold.text-sm.text-white.bg-red-500.py-2.px-4.rounded(
+            class='hover:bg-red-700',
+            type='button'
+          ) Cancel
+          button.inline-block.bg-green-500.text-sm.text-white.font-bold.py-2.px-4.rounded(
+            class='hover:bg-green-700',
+            type='submit'
+          ) Save

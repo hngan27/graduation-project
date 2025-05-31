@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  h1.text-center.text-2xl.font-bold.mb-4 #{ t('user.userManager') }
+  .flex.justify-end.mb-4
+    a.px-4.py-2.border.border-blue-500.text-blue-500.rounded(
+      class='hover:bg-blue-500.hover:text-white',
+      href='/users/create'
+    ) #{ t('user.action.add') }
+  table.w-full.border-collapse.border.border-gray-300
+    thead
+      tr(class='hover:bg-gray-50')
+        th.p-2.border.border-gray-300 #
+        th.p-2.border.border-gray-300 #{ t('user.detail.name') }
+        th.p-2.border.border-gray-300 #{ t('user.detail.username') }
+        th.p-2.border.border-gray-300 #{ t('user.detail.email') }
+        th.p-2.border.border-gray-300 #{ t('user.detail.role') }
+        th.p-2.border.border-gray-300 #{ t('user.detail.birthday') }
+        th.p-2.border.border-gray-300
+    tbody
+      each user, index in users ? users : ['There are no user!']
+        tr
+          th.p-2.border.border-gray-300 #{ index+1 }
+          td.p-2.border.border-gray-300 #{ user.name }
+          td.p-2.border.border-gray-300 #{ user.username }
+          td.p-2.border.border-gray-300 #{ user.email }
+          td.p-2.border.border-gray-300 #{ user.role }
+          td.p-2.border.border-gray-300 #{ user.birthday.toLocaleDateString("en-GB") }
+          td.p-2.border.border-gray-300.flex.justify-between
+            a.px-2.py-1.border.border-blue-500.text-blue-500.rounded(
+              class='hover:bg-blue-500.hover:text-white',
+              href=`/users/${user.id}`
+            ) #{ t('common.detail') }
+            a.px-2.py-1.border.border-yellow-500.text-yellow-500.rounded(
+              class='hover:bg-blue-500.hover:text-white',
+              href=`/users/${user.id}/update`
+            ) #{ t('common.edit') }
+            a.px-2.py-1.border.border-red-500.text-red-500.rounded(
+              class='hover:bg-blue-500.hover:text-white',
+              href=`/users/${user.id}/delete`
+            ) #{ t('common.delete') }

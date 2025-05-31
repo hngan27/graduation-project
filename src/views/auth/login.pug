@@ -1,0 +1,52 @@
+extends common-layout
+
+block content
+  .flex.items-center.justify-between
+    .flex-1.flex.flex-col.items-center
+      img.h-50(src='/images/banner.png', alt='SmartEdu Logo')
+
+    .flex-1.flex.items-center.justify-center.min-h-screen.bg-brand-light-2
+      .max-w-md.w-full.mx-auto.bg-white.shadow-lg.rounded-lg.p-8
+        h2.text-2xl.font-semibold.mb-6.text-center= t('login.title')
+
+        //- Hiển thị thông báo lỗi
+        if error_message
+          p.text-l.mb-6.text-red-500.text-center.error-message= error_message
+
+        if success_message
+          p.success-message.text-green-500.text-center.mb-4= success_message
+
+        form(action='/auth/login', method='post')
+          .form-group.mb-4
+            label.text-sm.italic(for='email')= t('email')
+            input#email.w-full.p-2.border.border-gray-300.rounded-md(
+              type='text',
+              name='email',
+              value=attribute ? attribute.email : '',
+              required
+            )
+            if errors && errors.find(err => err.param === 'email')
+              p.text-red-500.text-sm.italic= t('login.errors.email_invalid')
+          .form-group.mb-4
+            label.text-sm.italic(for='password')= t('password')
+            input#password.w-full.p-2.border.border-gray-300.rounded-md(
+              type='password',
+              name='password',
+              value=attribute ? attribute.password : '',
+              required
+            )
+            if errors && errors.find(err => err.param === 'password')
+              p.text-red-500.text-sm.italic= t('login.errors.password_length')
+          .form-group.flex.items-center.mb-4
+            input#show-password.mr-2(type='checkbox')
+            label(for='show-password')= t('show_password')
+          button.w-full.bg-brand-primary.text-white.py-2.rounded-md(
+            type='submit',
+            class='hover:bg-brand-primary-dark'
+          )= t('sign_in')
+          p.text-right.mt-2
+            a.text-sm.italic.underline.text-brand-primary-dark.hover-text-brand-primary(
+              href='/auth/forgot-password'
+            )= t('login.forgot_password')
+
+  script(src='/javascripts/login.js')

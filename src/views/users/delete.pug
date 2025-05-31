@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  h1 #{ t('user.user') }: #{ user.name }
+
+  p #{ t('common.confirmMessage') }
+  form(method='POST')
+    input#userID(type='hidden', name='userID', value=user.id)
+    button.btn.btn-danger #{ t('common.delete') }

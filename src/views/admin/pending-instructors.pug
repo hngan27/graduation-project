@@ -1,0 +1,45 @@
+extends index
+
+block content
+  .container.mx-auto.p-8
+    h2.text-3xl.font-bold.mb-6.text-gray-900.text-center #{ t('pending_instructors.title') }
+
+    if success_message
+      p.success-message.text-green-500.text-center.mb-4= success_message
+
+    if pendingInstructors.length > 0
+      table.w-full.bg-white.shadow-lg.rounded-lg
+        thead.bg-gray-100
+          tr
+            th.px-4.py-2.text-center #{ t('pending_instructors.index') }
+            th.px-4.py-2.text-left #{ t('pending_instructors.name') }
+            th.px-4.py-2.text-left #{ t('pending_instructors.email') }
+            th.px-4.py-2.text-left #{ t('pending_instructors.actions') }
+        tbody
+          each instructor, index in pendingInstructors
+            tr
+              td.px-4.py-2.text-center #{ index + 1 }
+              td.px-4.py-2
+                a.text-black(
+                  href=`/admin/instructor-pending/${instructor.id}`,
+                  class='hover:text-blue-600 hover:underline'
+                ) #{ instructor.name }
+              td.px-4.py-2
+                a.text-black(
+                  href=`/admin/instructor-pending/${instructor.id}`,
+                  class='hover:text-blue-600 hover:underline'
+                ) #{ instructor.email }
+              td.px-4.py-2
+                form.inline(
+                  action=`/admin/approve/${instructor.id}`,
+                  method='POST'
+                )
+                  button.bg-green-500.text-white.px-4.py-2.rounded #{ t('pending_instructors.accept') }
+                form.inline.ml-2(
+                  action=`/admin/reject/${instructor.id}`,
+                  method='POST'
+                )
+                  button.bg-red-500.text-white.px-4.py-2.rounded #{ t('pending_instructors.reject') }
+
+    else
+      p.text-center.text-gray-500 #{ t('pending_instructors.no_instructors') }

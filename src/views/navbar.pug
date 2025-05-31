@@ -1,0 +1,188 @@
+mixin navLink(href, text)
+  - var isActive = currentPath === href;
+  li
+    a.block.py-2.px-3.rounded(
+      href=href,
+      class=`md:p-0 hover:text-blue-300 dark:hover:text-blue-500 ${isActive ? 'text-blue-300 font-bold' : 'text-white'}`
+    )= text
+
+nav.relative.bg-brand-primary.mb-4.z-10(class='dark:bg-brand-primary-dark')
+  .max-w-screen-xl.flex.flex-wrap.items-center.justify-between.mx-auto.p-2
+    a.flex.items-center.space-x-3(href='/', class='rtl:space-x-reverse')
+      img.h-16.w-auto(src='/icons/logo.png', alt='Go4ITMastery')
+
+    .flex.items-center.space-x-4
+      form.relative(action='/search', method='get')
+        input.w-full.p-2.pr-10.text-sm.text-gray-900.border.border-gray-300.rounded-full.bg-gray-50(
+          type='text',
+          name='keyword',
+          value=keyword,
+          placeholder='Search...',
+          class='focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+        )
+        button.absolute.inset-y-0.right-0.flex.items-center.pr-3.text-gray-500(
+          type='submit',
+          class='hover:text-gray-900 dark:hover:text-white'
+        )
+          svg.w-4.h-4(
+            aria-hidden='true',
+            xmlns='http://www.w3.org/2000/svg',
+            fill='none',
+            viewBox='0 0 20 20'
+          )
+            path(
+              stroke='currentColor',
+              stroke-linecap='round',
+              stroke-linejoin='round',
+              stroke-width='2',
+              d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'
+            )
+          span.sr-only Search
+
+    .flex.items-center.gap-3.space-x-3(
+      class='md:order-3 md:space-x-0 rtl:space-x-reverse'
+    )
+      // Language Dropdown
+      .relative.inline-block.text-left
+        button#languageDropdown.inline-flex.items-center.text-gray-500.bg-white.rounded-lg.px-4.py-2.space-x-2.mr-6(
+          class='hover:bg-gray-100 focus:outline-none focus:shadow-outline',
+          type='button',
+          aria-expanded='false',
+          aria-haspopup='true',
+          onclick='toggleDropdown()'
+        )
+          img#selectedLanguageFlag.w-5.h-5(
+            src=language === 'en' ? '/icons/gb.png' : '/icons/vn.svg',
+            alt='Flag'
+          )
+          span#selectedLanguageText= language === 'en' ? 'English' : 'Vietnamese'
+          svg.w-4.h-4.fill-current.ml-2(
+            aria-hidden='true',
+            xmlns='http://www.w3.org/2000/svg',
+            fill='none',
+            viewBox='0 0 24 24',
+            stroke='currentColor'
+          )
+            path(
+              stroke-linecap='round',
+              stroke-linejoin='round',
+              stroke-width='2',
+              d='M19 9l-7 7-7-7'
+            )
+
+        // Dropdown menu
+        ul#languageMenu.hidden.absolute.right-0.mt-2.w-48.bg-white.border.border-gray-200.rounded-lg.shadow-lg.z-50(
+          aria-labelledby='languageDropdown'
+        )
+          li
+            a.flex.items-center.px-4.py-2.text-gray-900.rounded-lg.space-x-2.cursor-pointer(
+              class='hover:bg-gray-100',
+              onclick='selectLanguage("en", "/icons/gb.png", "English")'
+            )
+              img.w-5.h-5(src='/icons/gb.png', alt='English')
+              span English
+          li
+            a.flex.items-center.px-4.py-2.text-gray-900.rounded-lg.space-x-2.cursor-pointer(
+              class='hover:bg-gray-100',
+              onclick='selectLanguage("vi", "/icons/vn.svg", "Vietnamese")'
+            )
+              img.w-5.h-5(src='/icons/vn.svg', alt='Vietnamese')
+              span Vietnamese
+
+      if current_user
+        div
+          .flex.items-center.cursor-pointer.space-x-2
+            a.inline-block.px-4.hover-text-gray-700(
+              href='/chat#chat-block',
+              title='Chat'
+            )
+              .relative.inline-block
+                .bg-gray-100.rounded-full.w-10.h-10.flex.items-center.justify-center
+                  i.fa-solid.fa-message.text-gray-600.text-xl.mx-2
+                if unreadCount > 0
+                  span.absolute.top-0.right-0.flex.items-center.justify-center.w-5.h-5.bg-red-500.text-white.text-xs.font-bold.rounded-full= unreadCount
+
+            .w-10.h-10.rounded-full.ml-2.overflow-hidden.flex-shrink-0
+              if current_user.avatar_url
+                img#userAvatar.w-full.h-full.object-cover(
+                  src=current_user.avatar_url,
+                  alt=current_user.username,
+                  onclick='toggleUserMenu()'
+                )
+              else
+                img#userAvatar.w-full.h-full.object-cover(
+                  src=current_user.role === UserRole.INSTRUCTOR ? '/images/default_avatar.png' : '/images/student.png',
+                  alt=current_user.username,
+                  onclick='toggleUserMenu()'
+                )
+
+          #userMenu.container.mx-auto.hidden.absolute.mt-2.right-0
+            .w-80.bg-white.border.border-gray-200.rounded-lg.shadow-lg.z-50
+              ul.py-1.text-gray-700
+                li
+                  .flex.items-center.py-2
+                    .w-10.h-10.rounded-full.ml-2.overflow-hidden.flex-shrink-0
+                      if current_user.avatar_url
+                        img#userAvatar.w-full.h-full.object-cover(
+                          src=current_user.avatar_url,
+                          alt=current_user.username,
+                          onclick='toggleUserMenu()'
+                        )
+                      else
+                        img#userAvatar.w-full.h-full.object-cover(
+                          src=current_user.role === UserRole.INSTRUCTOR ? '/images/default_avatar.png' : '/images/student.png',
+                          alt=current_user.username,
+                          onclick='toggleUserMenu()'
+                        )
+                    .flex.flex-col.justify-center
+                      p.text-dark.text-nowrap.font-medium.ml-2 #{ current_user.name }
+                      p.text-sm.ml-2 #{ current_user.email }
+                li
+                  a.block.px-4.py-2.text-sm(class='hover:bg-gray-100', href='/profile') #{ t('title.profile') }
+                li
+                  a.block.px-4.py-2.text-sm(class='hover:bg-gray-100', href='/courses') #{ t('title.my_courses') }
+                li
+                  a.block.px-4.py-2.text-sm(
+                    class='hover:bg-gray-100',
+                    href='/auth/logout'
+                  ) #{ t('sign_out') }
+      else
+        a.ml-4.text-white.bg-blue-800.font-medium.rounded-lg.text-sm.px-4.py-2.text-center(
+          href='/auth/login',
+          class='hover:bg-brand-mid focus:ring-4 focus:outline-none focus:ring-brand-primary dark:bg-brand-primary-dark dark:hover:bg-brand-primary dark:focus:ring-brand-primary'
+        ) #{ t('nav.sign_in') }
+
+      button.inline-flex.items-center.p-2.w-10.h-10.justify-center.text-sm.text-gray-500.rounded-lg(
+        data-collapse-toggle='navbar-cta',
+        type='button',
+        class='md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600',
+        aria-controls='navbar-cta',
+        aria-expanded='false',
+        onclick='toggleMenu()'
+      )
+        span.sr-only Open main menu
+        svg.w-5.h-5(
+          aria-hidden='true',
+          xmlns='http://www.w3.org/2000/svg',
+          fill='none',
+          viewbox='0 0 17 14'
+        )
+          path(
+            stroke='currentColor',
+            stroke-linecap='round',
+            stroke-linejoin='round',
+            stroke-width='2',
+            d='M1 1h15M1 7h15M1 13h15'
+          )
+    #navbar-cta.items-center.justify-between.hidden.w-full(
+      class='md:flex md:w-auto md:order-1'
+    )
+      ul.flex.flex-col.font-medium.p-4.mt-4.rounded-lg.bg-brand-primary.text-white(
+        class='md:p-0 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent md:dark:bg-transparent'
+      )
+        +navLink('/', t('nav.home'))
+        +navLink('/courses', t('nav.courses'))
+        +navLink('/users/instructors', t('nav.instructors'))
+
+// JavaScript for toggling the menu
+script(src='/javascripts/navbar.js')

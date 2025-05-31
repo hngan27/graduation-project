@@ -1,0 +1,319 @@
+extends ../layout
+
+block content
+  .flex.h-screen.bg-gray-50.border-2.border-slate-300
+    // Sidebar: Chat history
+    .bg-white.h-full.flex.flex-col(class='w-1/4')
+      h2.text-2xl.font-bold.px-6.pt-6.pb-2= t('common.messages')
+      form.relative.px-6.mb-4(onsubmit='return false')
+        input#partnerSearch.w-full.border.border-gray-300.rounded-full.py-2.px-8.text-sm(
+          oninput='filterPartners()',
+          type='text',
+          name='q',
+          placeholder=t('common.search'),
+          class='focus:outline-none focus:ring-2 focus:ring-blue-500'
+        )
+        button.absolute.inset-y-0.right-6.flex.items-center.p-2.text-gray-400(
+          type='button',
+          onclick='filterPartners()',
+          class='hover:text-gray-600'
+        )
+          svg.w-4.h-4(
+            xmlns='http://www.w3.org/2000/svg',
+            fill='none',
+            viewBox='0 0 24 24',
+            stroke='currentColor'
+          )
+            path(
+              stroke-linecap='round',
+              stroke-linejoin='round',
+              stroke-width='2',
+              d='M21 21l-4-4m0 0A7 7 0 1 0 5 5a7 7 0 0 0 12 12z'
+            )
+      #partnerList.flex-1.overflow-y-auto.space-y-1.px-2
+        // Chat history group
+        if chats.length
+          ul#chatList.space-y-1
+            each chat in chats
+              - const isSelected = selectedPartner && selectedPartner.id === chat.userId;
+              - const hasUnread = chat.unreadCount && chat.unreadCount > 0;
+              li.chat-item(
+                class=(isSelected ? 'bg-gray-200 ' : hasUnread ? 'bg-gray-100 ' : '') + 'flex items-center gap-3 px-4 py-2 rounded-xl cursor-pointer hover:bg-gray-100',
+                style=chat.userName === 'Không tìm thấy người dùng' ? 'opacity:0.6;' : ''
+              )
+                a.flex.items-center.flex-1(
+                  href='/chat/' + chat.userId + '#chat-block'
+                )
+                  img.h-10.w-10.rounded-full(
+                    src=chat.userAvatar || '/images/default_avatar.png',
+                    alt=chat.userName
+                  )
+                  .ml-2.flex-1
+                    .flex.justify-between.items-center
+                      if chat.userName === 'Không tìm thấy người dùng'
+                        .font-medium.text-gray-400= chat.userName
+                      else
+                        .font-medium= chat.userName
+                    .text-sm.text-gray-500.flex.items-center
+                      .truncate
+                        - const prefix = chat.lastSenderId === currentUserId ? t('common.youPrefix') : '';
+                        if chat.lastMessage
+                          | #{ prefix }#{ chat.lastMessage }
+                        else if chat.lastImageUrl
+                          | #{ prefix }#{ t('common.sentImage') }
+                      span.mx-2.text-lg.text-gray-400.font-medium ·
+                      span.text-xs.text-gray-400= chat.relativeTime
+
+                  if chat.unreadCount
+                    .ml-2.bg-green-500.text-white.text-xs.rounded-full.px-2= chat.unreadCount
+        else
+          p.text-gray-500.text-center.p-4= t('common.noChatHistory')
+        // Instructors group (hidden until search)
+        #instructorGroup(style='display: none')
+          h3.text-xs.text-gray-400.px-4.mt-4= t('common.notMessaged')
+          ul#instructorList.space-y-1
+            each instructor in instructors
+              li.instructor-item(
+                class=(selectedPartner && selectedPartner.id === instructor.id ? 'bg-blue-50 ' : '') + 'flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-100'
+              )
+                a.flex.items-center.flex-1(
+                  href='/chat/' + instructor.id + '#chat-block'
+                )
+                  img.h-10.w-10.mr-3.rounded-full(
+                    src=instructor.avatar_url || '/images/default_avatar.png',
+                    alt=instructor.name
+                  )
+                  .flex-1.min-w-0.px-2
+                    p.font-medium.truncate= instructor.name
+        p#noResults.text-gray-500.text-center.mt-4(style='display: none')= t('common.noSearchResults')
+
+    // Main chat window
+    #chat-block.flex-1.bg-gray-50.flex.flex-col.h-full
+      if selectedPartner
+        // Header
+        .flex.items-center.px-8.py-4.bg-white.shadow-sm
+          img.h-10.w-10.rounded-full(
+            src=selectedPartner.avatar_url || '/images/default_avatar.png',
+            alt=selectedPartner.name
+          )
+          .ml-4
+            .font-semibold= selectedPartner.name
+            if isPartnerOnline
+              .text-xs.text-green-500= t('common.online')
+            else
+              .text-xs.text-gray-400= t('common.offline')
+          .ml-auto
+            // Delete conversation button
+            form(
+              method='post',
+              action='/chat/' + selectedPartner.id + '/delete'
+            )
+              button.delete-convo-btn.rounded-full.p-2(
+                type='button',
+                class='hover:bg-gray-100'
+              )
+                i.fas.fa-times.text-red-500.text-xl
+
+        // Chat content
+        #messages.flex-1.overflow-y-auto.px-8.py-4.flex.flex-col.gap-2
+          each msg in messages
+            if msg.senderId === currentUserId
+              .flex.justify-end.message-item(data-created-at=msg.createdAt)
+                .bg-green-100.text-gray-900.px-4.py-2.rounded-2xl.max-w-xs.shadow-sm
+                  if msg.imageUrl
+                    img.w-32.h-32.mb-2.rounded.cursor-pointer(
+                      src=msg.imageUrl,
+                      onclick='window.open(this.src, "_blank")'
+                    )
+                  if msg.content
+                    p= msg.content
+                  .text-xs.text-right.text-gray-400.mt-1= msg.createdAt ? msg.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : ''
+            else
+              .flex.justify-start.message-item(data-created-at=msg.createdAt)
+                .bg-white.text-gray-900.px-4.py-2.rounded-2xl.max-w-xs.shadow-sm
+                  if msg.imageUrl
+                    img.w-32.h-32.mb-2.rounded.cursor-pointer(
+                      src=msg.imageUrl,
+                      onclick='window.open(this.src, "_blank")'
+                    )
+                  if msg.content
+                    p= msg.content
+                  .text-xs.text-left.text-gray-400.mt-1= msg.createdAt ? msg.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : ''
+        // Input
+        form#chat-form.flex.items-center.gap-2.px-8.py-4.bg-white.shadow(
+          enctype='multipart/form-data',
+          method='post',
+          action='/chat/' + selectedPartner.id
+        )
+          input#messageInput.flex-1.bg-gray-100.rounded-full.px-4.py-2.text-sm(
+            type='text',
+            name='content',
+            placeholder=t('common.typeYourMessageHere')
+          )
+          // file picker for image upload
+          input#imageInput.hidden(type='file', name='image', accept='image/*')
+          img#imagePreview.hidden.w-16.h-16.rounded.mr-2
+          button.text-gray-500.p-2(
+            type='button',
+            onclick='document.getElementById("imageInput").click()',
+            aria-label=t('common.uploadImage')
+          )
+            i.fas.fa-image.text-xl
+          button.text-green-500.p-2(
+            type='submit',
+            aria-label=t('common.sendMessage'),
+            class='hover:text-green-600'
+          )
+            i.fas.fa-paper-plane
+      else
+        if chats.length === 0
+          .flex.flex-1.items-center.justify-center.text-gray-400.text-xl= t('common.selectInstructorPrompt')
+        else
+          .flex.flex-1.items-center.justify-center.text-gray-400.text-xl= t('common.selectConversationPrompt')
+
+  //- Load Socket.IO client and chat script
+  script(src='/socket.io/socket.io.js')
+  script.
+    const chatConfig = {
+      currentUserId: '!{currentUserId}',
+      partnerId: '!{selectedPartner ? selectedPartner.id : ""}',
+      youPrefix: '!{t("common.youPrefix")}',
+      sentImageText: '!{t("common.sentImage")}',
+    };
+  script(src='/javascripts/chat.js')
+  // Inline script to filter chat and instructor partners list dynamically
+  script.
+    function filterPartners() {
+      const filter = document.getElementById('partnerSearch').value.toLowerCase();
+      const chatItems = document.querySelectorAll('#chatList li');
+      const instructorGroup = document.getElementById('instructorGroup');
+      const instructorItems = document.querySelectorAll('#instructorList li');
+      let chatCount = 0;
+      chatItems.forEach(li => {
+        const text = li.textContent.toLowerCase();
+        const visible = text.includes(filter);
+        li.style.display = visible ? '' : 'none';
+        if (visible) chatCount++;
+      });
+      if (filter) {
+        instructorGroup.style.display = '';
+        var instrCount = 0;
+        instructorItems.forEach(li => {
+          const text = li.textContent.toLowerCase();
+          const visible = text.includes(filter);
+          li.style.display = visible ? '' : 'none';
+          if (visible) instrCount++;
+        });
+      } else {
+        instructorGroup.style.display = 'none';
+      }
+      const noResults = document.getElementById('noResults');
+      if (filter && chatCount + (typeof instrCount === 'number' ? instrCount : 0) === 0) {
+        noResults.style.display = '';
+      } else {
+        noResults.style.display = 'none';
+      }
+    }
+    document.getElementById('partnerSearch').addEventListener('input', filterPartners);
+  // auto scroll to bottom and setup infinite scroll for older messages
+  script.
+    document.addEventListener('DOMContentLoaded', () => {
+      const messagesContainer = document.getElementById('messages');
+      if (messagesContainer) {
+        // scroll to latest on load
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        // load older messages when scrolled to top
+        messagesContainer.addEventListener('scroll', () => {
+          if (messagesContainer.scrollTop === 0) {
+            loadOlderMessages();
+          }
+        });
+      }
+    });
+  script.
+    async function loadOlderMessages() {
+      if (!chatConfig.partnerId) return;
+      const firstMsg = document.querySelector('#messages .message-item');
+      const before = firstMsg?.getAttribute('data-created-at') || '';
+      const res = await fetch(`/chat/${chatConfig.partnerId}/messages?before=${before}&limit=20`);
+      if (!res.ok) return;
+      const older = await res.json();
+      const container = document.getElementById('messages');
+      const prevHeight = container.scrollHeight;
+      older.forEach(m => {
+        const wrapper = document.createElement('div');
+        wrapper.className = m.senderId === chatConfig.currentUserId ? 'flex justify-end message-item' : 'flex justify-start message-item';
+        const msgDiv = document.createElement('div');
+        msgDiv.className = m.senderId === chatConfig.currentUserId ? 'bg-green-100 text-gray-900 px-4 py-2 rounded-2xl max-w-xs shadow-sm' : 'bg-white text-gray-900 px-4 py-2 rounded-2xl max-w-xs shadow-sm';
+        if (m.imageUrl) {
+          const img = document.createElement('img');
+          img.src = m.imageUrl;
+          img.className = 'w-32 h-32 mb-2 rounded cursor-pointer';
+          img.setAttribute('onclick', 'window.open(this.src, "_blank")');
+          msgDiv.appendChild(img);
+        }
+        if (m.content) {
+          const p = document.createElement('p');
+          p.textContent = m.content;
+          msgDiv.appendChild(p);
+        }
+        const ts = document.createElement('div');
+        ts.className = 'text-xs text-gray-400 mt-1';
+        ts.textContent = new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+        msgDiv.appendChild(ts);
+        wrapper.setAttribute('data-created-at', m.createdAt);
+        wrapper.appendChild(msgDiv);
+        container.prepend(wrapper);
+      });
+      // restore scroll position
+      container.scrollTop = container.scrollHeight - prevHeight;
+    }
+  // Image preview for upload
+  script.
+    const fileInput = document.getElementById('imageInput');
+    const preview = document.getElementById('imagePreview');
+    if (fileInput && preview) {
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (file) {
+          preview.src = URL.createObjectURL(file);
+          preview.classList.remove('hidden');
+        } else {
+          preview.src = '';
+          preview.classList.add('hidden');
+        }
+      });
+    }
+  // Modal confirmation for delete conversation
+  #deleteModal.hidden.fixed.inset-0.bg-black.bg-opacity-50.items-center.justify-center
+    .bg-white.rounded-lg.p-6.w-80
+      h3.text-lg.font-semibold.mb-4= t('common.confirmDeleteConversation')
+      .flex.justify-end.space-x-2
+        button#cancelDeleteBtn.px-4.py-2.rounded.bg-gray-200.hover-bg-gray-300(
+          type='button'
+        )= t('common.back')
+        button#confirmDeleteBtn.px-4.py-2.rounded.bg-red-500.text-white.hover-bg-red-600(
+          type='button'
+        )= t('common.delete')
+  script.
+    document.addEventListener('DOMContentLoaded', () => {
+      const deleteBtn = document.querySelector('.delete-convo-btn');
+      const deleteModal = document.getElementById('deleteModal');
+      const cancelBtn = document.getElementById('cancelDeleteBtn');
+      const confirmBtn = document.getElementById('confirmDeleteBtn');
+      const deleteForm = deleteBtn ? deleteBtn.closest('form') : null;
+      if (deleteBtn && deleteModal && cancelBtn && confirmBtn && deleteForm) {
+        deleteBtn.addEventListener('click', e => {
+          e.preventDefault();
+          deleteModal.classList.remove('hidden');
+          deleteModal.classList.add('flex');
+        });
+        cancelBtn.addEventListener('click', () => {
+          deleteModal.classList.add('hidden');
+          deleteModal.classList.remove('flex');
+        });
+        confirmBtn.addEventListener('click', () => {
+          deleteForm.submit();
+        });
+      }
+    });

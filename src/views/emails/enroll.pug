@@ -1,0 +1,71 @@
+doctype html
+html
+  head
+    title New Request Enrollment
+  body(
+    style='background-color: #f3f4f6; font-family: Arial, sans-serif; padding: 20px'
+  )
+    div(style='max-width: 800px; margin: 0 auto; padding: 20px')
+      div(
+        style='background-color: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 25px 30px'
+      )
+        h1(
+          style='font-size: 24px; font-weight: bold; color: #1f2937; margin-bottom: 16px'
+        ) New Request Enrollment
+        p(style='color: #4b5563; margin-bottom: 16px') A new student has enrolled in your course. Here are the details:
+
+        div(
+          style='background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 24px'
+        )
+          img(
+            src=course.image_url === null ? 'https://res.cloudinary.com/duminopj4/image/upload/v1724528078/avatars/ua43m9rbgznlfcktplrm.png' : course.image_url,
+            alt=course.name,
+            style='width: 100%; height: 288px; object-fit: cover; border-radius: 8px; margin-bottom: 8px'
+          )
+          h2(
+            style='font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 8px'
+          )= course.name
+          p(style='color: #4b5563; margin-bottom: 8px')
+            strong Description:&nbsp;
+            span= course.description
+          p(style='color: #4b5563; margin-bottom: 8px')
+            strong Level:&nbsp;
+            span= course.level
+          p(style='color: #4b5563')
+            strong Duration:&nbsp;
+            span= course.duration
+
+        div(
+          style='background-color: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 24px'
+        )
+          h3(
+            style='font-size: 18px; font-weight: 600; color: #1f2937; margin-bottom: 8px'
+          ) Student Information
+          p(style='color: #4b5563; margin-bottom: 8px')
+            strong Name:&nbsp;
+            span= student.name
+          p(style='color: #4b5563; margin-bottom: 8px')
+            strong Email:&nbsp;
+            span= student.email
+          p(style='color: #4b5563; margin-bottom: 8px')
+            strong Major:&nbsp;
+            span= student.specialization || 'None'
+          p(style='color: #4b5563')
+            strong Enrollment Date:&nbsp;
+            span= new Date(enrollment_date).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })
+
+        p(style='color: #4b5563; margin-bottom: 16px') Please review this enrollment and take any necessary actions.
+
+        a(
+          href=`${process.env.APP_URL}/courses/${course.id}/manage`,
+          style='display: inline-block; background-color: #3b82f6; color: white; font-weight: 600; padding: 8px 16px; border-radius: 4px; text-decoration: none'
+        ) Manage Course Students
+
+        p(style='color: #4b5563; margin-top: 24px') If you have any questions or concerns, please contact our support team.
+
+        p(style='color: #6b7280; margin-top: 16px') Best regards,
+        p(style='color: #6b7280') The Course Management Team
+
+    p(
+      style='color: #9ca3af; font-size: 14px; text-align: center; margin-top: 32px'
+    ) This is an automated message, please do not reply directly to this email.

@@ -1,0 +1,72 @@
+extends ../layout
+
+block content
+  body
+    .max-w-2xl.mx-auto.bg-white.shadow-lg.rounded-lg.p-6
+      .grid.grid-cols-2.gap-4
+        .flex.flex-col.items-center.justify-center
+          .flex.items-center.space-x-4
+            .w-24.h-24.rounded-full.mr-4.overflow-hidden.flex-shrink-0
+              if user.avatar_url
+                img.w-full.h-full.object-cover(
+                  src=user.avatar_url,
+                  alt=user.username
+                )
+              else
+                img.w-full.h-full.object-cover(
+                  src=user.role === UserRole.INSTRUCTOR ? '/images/default_avatar.png' : '/images/student.png',
+                  alt=user.username
+                )
+
+          .mt-4
+          h2.text-2xl.font-bold.mb-2.text-center #{ user.name }
+          p.text-sm.text-gray-500 #{ user.email }
+          .mt-4.flex.justify-center
+            a.inline-flex.items-center.gap-2.px-4.py-2.bg-blue-500.text-white.rounded-lg.hover-bg-blue-600(
+              href=`/chat/${user.id}#chat-block`
+            )
+              i.fas.fa-comments.text-white
+              | #{ t('common.messages') }
+
+        div
+          .mt-4
+            ul
+              li.mt-2
+                strong #{ t('user.detail.role') }:
+                | &nbsp;
+                span= user.role === UserRole.INSTRUCTOR ? t('common.mentor') : t('common.mentee')
+              li.mt-2
+                strong #{ t('user.detail.birthday') }:
+                | &nbsp;#{ user.birthday ? new Date(user.birthday).toLocaleDateString("en-GB") : 'N/A' }
+              li.mt-2
+                strong #{ t('user.detail.phone') }:
+                | &nbsp;#{ user.phone ? user.phone : '' }
+              li.mt-2
+                strong #{ t('user.detail.major') }:
+                | &nbsp;#{ user.specialization ? user.specialization : '' }
+
+    .mb-6
+    .max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
+      h2.text-xl.font-bold.mb-4 #{ t('user.detail.about') }
+      p.text-gray-600.text-justify= user.about || ''
+      .mb-6
+      .flex.justify-between.items-center.mb-6
+        h2.text-xl.font-bold #{ t('user.detail.courses') }
+      .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
+        each course in userCourses
+          a.block.bg-white.shadow-md.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+            class='hover:shadow-xl hover:scale-105',
+            href=`/courses/${course.id}`
+          )
+            .rounded-lg.overflow-hidden
+              .flex.justify-center.items-center.h-48
+                img.h-full(
+                  src=course.image_url === null ? '/images/course.png' : course.image_url,
+                  alt='Image'
+                )
+              .p-4
+                h3.font-semibold.mb-2= course.name
+                p.text-sm.text-gray-600.mb-4= course.description
+                .flex.justify-between.items-center.text-sm.text-gray-500
+                  span= `${course.level} • ${course.duration}`
+                  span= `${course.studentCount} students`

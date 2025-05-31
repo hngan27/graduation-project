@@ -1,0 +1,25 @@
+{
+  "error": {
+    "title": "Error",
+    "userNotFound": "User not found",
+    "courseNotFound": "Course not found",
+    "internalServerError": "Internal server error",
+    "badRequest": "Bad request",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden",
+    "conflict": "Conflict",
+    "unprocessableEntity": "Unprocessable entity",
+    "tooManyRequests": "Too many requests",
+    "serviceUnavailable": "Service unavailable",
+    "gatewayTimeout": "Gateway timeout",
+    "notImplemented": "Not implemented",
+    "unknown": "Unknown error",
+    "invalidId": "The provided ID is invalid.",
+    "permissionDenied": "Permission denied",
+    "failedToRetrieveCourseDetails": "Failed to retrieve course details.",
+    "search_failed": "An error occurred during the search",
+    "lessonNotFound": "Lesson Not Found",
+    "notVerify": "Please verify your account firstly",
+    "invalidCode": "Invalid or expired code. Please take the code of latest email."
+  }
+}

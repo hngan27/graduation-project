@@ -1,0 +1,157 @@
+extends ../layout
+
+block content
+  if current_user && current_user.role === UserRole.INSTRUCTOR
+    .container.mx-auto.px-4.mb-6
+      .flex.justify-between.items-center.mb-4
+        h2.text-xl.font-bold My Students
+
+      // Filters
+      .mb-4.flex.space-x-4
+        select#courseFilter.border.rounded-sm.px-2.py-1(
+          onchange='applyFilters()'
+        )
+          option(value='') All Courses
+          each course in courses
+            option(
+              value=course.id,
+              selected=courseFilter === course.id ? true : false
+            )= course.name
+
+        select#statusFilter.border.rounded-sm.px-2.py-1(
+          onchange='applyFilters()'
+        )
+          option(value='') All Status
+          each value, key in EnrollStatus
+            option(value=value, selected=statusFilter === value ? true : false)= key
+
+      ul.divide-y.divide-gray-200
+        each enrollment in enrollments
+          li.grid.gap-4(class='lg:grid-cols-11 hover:shadow-sm hover:bg-blue-50')
+            a.inline-block.col-span-4.flex.items-center.p-4.rounded-md.transition-all.duration-300.ease-in-out.cursor-pointer(
+              href=`/users/${enrollment.student.id}`,
+              class='hover:bg-red-100'
+            )
+              .w-12.h-12.rounded-full.mr-4.overflow-hidden.flex-shrink-0
+                img.w-full.h-full.object-cover(
+                  src=enrollment.student.avatar_url || '/images/student.png',
+                  alt=enrollment.student.name
+                )
+              .flex.flex-col
+                p.text-sm.truncate.font-medium.text-gray-900
+                  | #{ enrollment.student.name }
+                p.text-sm.truncate.text-gray-500
+                  | #{ enrollment.student.email }
+
+            a.inline-block.col-span-4.flex.items-center.p-4.rounded-md.transition-all.duration-300.ease-in-out.cursor-pointer(
+              href=`/courses/${enrollment.course.id}`,
+              class='hover:bg-red-100'
+            )
+              .w-12.h-12.rounded-sm.mr-4.overflow-hidden.flex-shrink-0
+                img.w-full.h-full.object-cover(
+                  src=enrollment.course.image_url || '/images/course.png',
+                  alt='Course Image'
+                )
+              .flex.flex-col
+                p.text-sm.truncate.font-medium.text-gray-900
+                  | #{ enrollment.course.name }
+
+            .col-span-1.flex.justify-center.items-center.space-x-2.p-2
+              case enrollment.status
+                when EnrollStatus.PENDING
+                  span.px-3.py-1.rounded-sm.text-xs.font-medium.bg-purple-100.text-purple-800= enrollment.status
+                when EnrollStatus.APPROVED
+                  span.px-2.py-1.rounded-sm.text-xs.font-medium.bg-green-100.text-green-800= enrollment.status
+                when EnrollStatus.REJECTED
+                  span.px-3.py-1.rounded-sm.text-xs.font-medium.bg-red-100.text-red-800= enrollment.status
+
+            .col-span-2.flex.justify-center.items-center.justify-center.space-x-2.p-2
+              if enrollment.status === EnrollStatus.PENDING
+                a.px-2.py-1.rounded-md.border-2.border-black.text-xs.font-medium.bg-green-100.text-green-800.cursor-pointer(
+                  class='hover:bg-green-400',
+                  href=`/courses/${enrollment.id}/approve`
+                ) Approve
+                a.px-3.py-1.rounded-md.border-2.border-black.text-xs.font-medium.bg-red-100.text-red-800.cursor-pointer(
+                  class='hover:bg-red-400',
+                  href=`/courses/${enrollment.id}/reject`
+                ) Reject
+
+      // Pagination
+      .mt-4.flex.justify-center
+        nav.inline-flex.rounded-md.shadow(aria-label='Pagination')
+          a.px-2.py-2.rounded-l-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500(
+            class='hover:bg-blue-100',
+            href=`?page=${currentPage > 1 ? currentPage - 1 : 1}${courseFilter ? `&course=${courseFilter}` : ''}${statusFilter ? `&status=${statusFilter}` : ''}`,
+            class=currentPage === 1 ? 'cursor-not-allowed' : ''
+          )
+            span.sr-only Previous
+            svg.h-5.w-5(
+              xmlns='http://www.w3.org/2000/svg',
+              viewBox='0 0 20 20',
+              fill='currentColor',
+              aria-hidden='true'
+            )
+              path(
+                fill-rule='evenodd',
+                d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z',
+                clip-rule='evenodd'
+              )
+
+          - const startPage = Math.max(1, currentPage - 2);
+          - const endPage = Math.min(totalPages, startPage + 4);
+
+          each page in Array.from({length: endPage - startPage + 1}, (_, i) => startPage + i)
+            if page === currentPage
+              span.z-10.bg-indigo-50.border-indigo-500.text-indigo-600.relative.inline-flex.items-center.px-4.py-2.border.text-sm.font-medium= page
+            else
+              a.bg-white.border-gray-300.text-gray-500.relative.inline-flex.items-center.px-4.py-2.border.text-sm.font-medium(
+                class='hover:bg-blue-100',
+                href=`?page=${page}${courseFilter ? `&course=${courseFilter}` : ''}${statusFilter ? `&status=${statusFilter}` : ''}`
+              )= page
+
+          if endPage < totalPages
+            span.relative.inline-flex.items-center.px-4.py-2.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-700 ...
+            a.bg-white.border-gray-300.text-gray-500.relative.inline-flex.items-center.px-4.py-2.border.text-sm.font-medium(
+              class='hover:bg-blue-100',
+              href=`?page=${totalPages}${courseFilter ? `&course=${courseFilter}` : ''}${statusFilter ? `&status=${statusFilter}` : ''}`
+            )= totalPages
+
+          a.px-2.py-2.rounded-r-md.border.border-gray-300.bg-white.text-sm.font-medium.text-gray-500(
+            class='hover:bg-blue-100',
+            href=`?page=${currentPage < totalPages ? currentPage + 1 : totalPages}${courseFilter ? `&course=${courseFilter}` : ''}${statusFilter ? `&status=${statusFilter}` : ''}`,
+            class=currentPage === totalPages ? 'cursor-not-allowed' : ''
+          )
+            span.sr-only Next
+            svg.h-5.w-5(
+              xmlns='http://www.w3.org/2000/svg',
+              viewBox='0 0 20 20',
+              fill='currentColor',
+              aria-hidden='true'
+            )
+              path(
+                fill-rule='evenodd',
+                d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z',
+                clip-rule='evenodd'
+              )
+
+  .container.mx-auto.px-4
+    .flex.justify-between.items-center
+      h2.text-xl.font-bold List Students
+    .grid.grid-cols-1.gap-4.p-4(class='md:grid-cols-2 lg:grid-cols-3')
+      each student in students
+        a.block.bg-white.rounded-lg.shadow-md.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+          class='hover:shadow-xl hover:scale-105',
+          href=`/users/${student.id}`
+        )
+          .flex.items-center.mb-4
+            .w-12.h-12.rounded-full.mr-4.overflow-hidden.flex-shrink-0
+              img.w-full.h-full.object-cover(
+                src=student.avatar_url ? student.avatar_url : '/images/student.png',
+                alt=student.username
+              )
+            .flex.flex-col
+              h3.font-semibold= student.name
+              p.text-sm.text-gray-500= student.email
+          p.text-sm.text-gray-600= student.about
+
+  script(src='/javascripts/filter.js')

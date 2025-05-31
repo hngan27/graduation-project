@@ -1,0 +1,180 @@
+body
+  if course
+    #modal.fixed.inset-0.flex.items-center.justify-center.z-50.bg-black.bg-opacity-50(
+      class=undefined === studentCount ? 'hidden' : ''
+    )
+      .bg-white.rounded-lg.shadow-lg.p-8
+        h2.text-2xl.font-bold.mb-4 Delete Course
+        if studentCount > 0
+          p.mb-6 This course has #{ studentCount } students enrolled. You need to delete all students before deleting this course.
+          .flex.justify-end
+            a.bg-emerald-400.text-white.px-5.py-2.rounded(
+              class='hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-opacity-50',
+              href=`/courses/${course.id}/update`
+            ) OK
+        else if studentCount === 0
+          p.mb-6 Are you sure you want to delete this course?
+          .flex.justify-end
+            form(method='POST')
+              input(type='hidden', name='courseId', value=course.id)
+              button.bg-red-500.text-white.px-4.py-2.rounded.mr-2(
+                type='submit',
+                class='hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50'
+              ) Delete
+            a.bg-gray-400.text-white.px-4.py-2.rounded(
+              class='hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50',
+              href=`/courses/${course.id}/update`
+            ) Cancel
+
+  .max-w-4xl.mx-auto.bg-white.rounded-lg.p-6
+    .flex.justify-between.items-center.mb-6
+      h1.text-3xl.font-bold= title
+      if course
+        a.text-sm.text-red-600.px-3.py-2.border-2.border-red-600.rounded(
+          href=`/courses/${course.id}/delete`,
+          class='hover:bg-red-100'
+        ) Delete Course
+    form.bg-white.shadow-md.rounded.px-8.pt-6.pb-8.mb-4(
+      method='POST',
+      enctype='multipart/form-data',
+      onsubmit='disableButton()'
+    )
+      .mb-4
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='name') Course Name
+        input#name.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+          class='focus:outline-none focus:shadow-outline',
+          type='text',
+          name='name',
+          value=undefined === course ? '' : course.name,
+          required
+        )
+
+      .mb-4
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='description') Description
+        textarea#description.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+          class='focus:outline-none focus:shadow-outline',
+          name='description',
+          rows='4',
+          required
+        )= undefined === course ? '' : course.description
+
+      .mb-4.flex.items-center.justify-between.gap-6
+        div(class='w-1/2')
+          label.block.text-gray-700.text-sm.font-bold.mb-2(for='level') Level
+          select#level.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            name='level',
+            required
+          )
+            option(value='') Select a level
+            each value, key in CourseLevel
+              if course && course.level === value
+                option(value=value, selected)= key
+              else
+                option(value=value)= key
+
+        div(class='w-1/2')
+          label.block.text-gray-700.text-sm.font-bold.mb-2(for='duration') Duration
+          input#duration.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            placeholder='e.g. 3 months or 5 weeks',
+            type='text',
+            name='duration',
+            value=undefined === course ? '' : course.duration
+          )
+
+      .mb-4
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='subInstructor') Sub-Instructor
+        select#subInstructor.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+          class='focus:outline-none focus:shadow-outline',
+          name='subInstructor'
+        )
+          option(value='') Select a sub-instructor (optional)
+          each subInstructor in subInstructors
+            if course && course.subInstructor && course.subInstructor.id === subInstructor.id
+              option(value=subInstructor.id, selected)= subInstructor.name
+            else
+              option(value=subInstructor.id)= subInstructor.name
+
+      .mb-4.relative
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='lessons') Lessons
+        .relative
+          input.selected-items.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            placeholder='Select lessons',
+            type='text',
+            name='lessonNames',
+            value=undefined === lessonNamesSelected ? '' : lessonNamesSelected.join(', '),
+            readonly
+          )
+          input#lessons(
+            type='text',
+            name='lessonIds',
+            readonly,
+            value=undefined === lessonIdsSelected ? '' : lessonIdsSelected.join(', '),
+            hidden
+          )
+          button.right-3.dropdown-toggle.absolute.text-gray-700(
+            type='button',
+            class='bottom-1.5'
+          ) ▼
+        .mt-1.dropdown-menu.absolute.bg-white.border.border-gray-400.rounded-md.py-1.shadow-md.z-10(
+          style='display: none'
+        )
+          .p-2
+            input#searchInput.w-full.px-2.py-1.border.rounded(
+              type='text',
+              placeholder='Search lessons...'
+            )
+          .max-h-64.overflow-y-auto
+            each lesson in lessons
+              .dropdown-item.px-4.py-1.cursor-pointer.flex.items-center(
+                class='hover:bg-blue-100'
+              )
+                if lessonIdsSelected && lessonIdsSelected.includes(lesson.id)
+                  .mr-2.text-blue-500 ✓
+                  option.text-blue-500(value=lesson.id)= lesson.title
+                else
+                  option(value=lesson.id)= lesson.title
+
+      .mb-4
+        label.block.text-gray-700.text-sm.font-bold.mb-2 Course Image
+        .flex.items-center.justify-between.space-x-2
+          if course
+            .w-10.h-10.border.border-gray-300.rounded.overflow-hidden.flex-shrink-0
+              img.h-full.object-cover(
+                src=course && course.image_url === null ? '/images/course.png' : course.image_url,
+                alt='Image'
+              )
+
+          input#image.block.w-full.text-xs.text-gray-900.border.border-gray-300.cursor-pointer.shadow.rounded.w-full.py-2.px-3.leading-tight(
+            class='focus:outline-none focus:shadow-outline',
+            type='file',
+            name='image',
+            accept='png, jpg'
+          )
+
+      .mb-4
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='tags') Tags
+        select#tags.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+          class='focus:outline-none focus:shadow-outline',
+          name='tags[]',
+          multiple
+        )
+          each tag in tags
+            if selectedTags && selectedTags.includes(tag.id)
+              option(value=tag.id, selected)= tag.name
+            else
+              option(value=tag.id)= tag.name
+
+      .flex.justify-end.items-center.space-x-4.mt-6
+        a.inline-block.font-bold.text-sm.text-white.bg-red-500.py-2.px-4.rounded(
+          class='hover:bg-red-600',
+          href='/courses' + (course ? `/${course.id}/manage` : '')
+        ) Cancel
+        button#saveButton.inline-block.bg-green-500.text-sm.text-white.font-bold.py-2.px-4.rounded(
+          class='hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed',
+          type='submit'
+        ) Save
+
+  script(src='/javascripts/course.js')

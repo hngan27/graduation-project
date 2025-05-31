@@ -1,0 +1,152 @@
+{
+  "success": {
+    "instructor_approved": "Mentor approved successfully!",
+    "instructor_rejected": "Mentor rejected successfully!",
+    "instructor_updated": "Mentor updated successfully!",
+    "instructor_deleted": "Mentor deleted successfully!"
+  },
+  "error": {
+    "instructor_not_found": "Mentor not found",
+    "cannot_delete_instructor_with_enrollments": "Cannot delete mmentor because some courses have enrollments"
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "logo": {
+    "alt": "SmartEdu Logo",
+    "name": "SmartEdu"
+  },
+  "sidebar": {
+    "statistics": "Statistics",
+    "approve_instructor": "Approve Mentors",
+    "list_instructors": "List Mentors",
+    "list_students": "List Mentees",
+    "list_courses": "List Courses",
+    "create_user": "Create User"
+  },
+  "logout": "Logout",
+  "statistics": {
+    "title": "Statistics",
+    "total_courses_title": "Total Courses",
+    "total_courses_description": "Total number of courses",
+    "total_instructors_title": "Total mentees",
+    "total_instructors_description": "Total number of mentors",
+    "pending_instructors_title": "Pending Mentors",
+    "pending_instructors_description": "Number of mentors waiting for approval",
+    "total_enrollments_title": "Total Enrollments",
+    "total_enrollments_description": "Total number of course enrollments",
+    "enrollment_over_time_title": "Enrollments Over Time"
+  },
+  "instructor_details": {
+    "title": "Mentor Details",
+    "avatar_alt": "Avatar",
+    "email_label": "Email:",
+    "about_label": "About:",
+    "specialization_label": "Specialization:",
+    "not_available": "N/A",
+    "back_to_list": "Back to list"
+  },
+  "user": {
+    "detail": {
+      "avatar_alt": "Avatar",
+      "name": "Name",
+      "role": "Role",
+      "birthday": "Birthday",
+      "phone": "Phone",
+      "not_available": "N/A",
+      "specialization": "Specialization",
+      "about": "About",
+      "courses": "Courses"
+    },
+    "edit_button": "Update Mentor",
+    "delete_button": "Delete Mentor"
+  },
+  "course": {
+    "image_alt": "Course image"
+  },
+  "instructor": {
+    "list_title": "Mentors",
+    "search_placeholder": "Search mentors...",
+    "search_button": "Search",
+    "no_description": "No description available",
+    "label": "Mentor",
+    "courses": "courses",
+    "update_button": "Update",
+    "delete_button": "Delete",
+    "confirm_delete": "Are you sure you want to delete this mentor? This action cannot be undone."
+  },
+  "pending_instructors": {
+    "title": "Pending Mentors",
+    "index": "No.",
+    "name": "Name",
+    "email": "Email",
+    "actions": "Actions",
+    "accept": "Accept",
+    "reject": "Reject",
+    "no_instructors": "No pending mentors."
+  },
+  "edit_instructor": {
+    "title": "Edit Mentor",
+    "avatar_alt": "Mentor Avatar",
+    "name_label": "Name",
+    "email_label": "Email",
+    "about_label": "About",
+    "specialization_label": "Specialization",
+    "phone_label": "Phone",
+    "avatar_label": "Avatar",
+    "save_button": "Save Changes"
+  },
+  "edit_student": {
+    "title": "Edit Mentee",
+    "avatar_alt": "Mentee Avatar",
+    "name_label": "Name",
+    "email_label": "Email",
+    "about_label": "About",
+    "phone_label": "Phone",
+    "avatar_label": "Avatar",
+    "save_button": "Save Changes"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "create_user": {
+      "title": "Create New User",
+      "form": {
+        "name": "Full Name",
+        "email": "Email Address",
+        "role": "User Role",
+        "submit": "Create User",
+        "select_role": "Select Role"
+      },
+      "success_title": "User Created Successfully",
+      "success_message": "An account has been created and credentials were sent to the user via email.",
+      "error_duplicate": "Email is already registered.",
+      "back_to_form": "Back to Create User Form"
+    },
+    "manage": "Manage",
+    "courses": "courses"
+  },
+  "validation": {
+    "name_required": "Name is required.",
+    "email_required": "Email is required.",
+    "email_invalid": "Invalid email address.",
+    "role_required": "Role is required."
+  },
+  "roles": {
+    "student": "Mentee",
+    "instructor": "Mentor"
+  },
+  "student": {
+    "update_title": "Edit Mentee",
+    "list_title": "Mentees",
+    "search_placeholder": "Search mentees...",
+    "search_button": "Search",
+    "no_description": "No description available",
+    "label": "Mentee",
+    "courses": "courses",
+    "update_button": "Update",
+    "delete_button": "Delete",
+    "confirm_delete": "Are you sure you want to delete this mentee? This action cannot be undone.",
+    "completed": "Completed",
+    "inprogress": "In Progress"
+  }
+}

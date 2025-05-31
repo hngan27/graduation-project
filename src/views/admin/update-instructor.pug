@@ -1,0 +1,78 @@
+extends index
+
+block content
+  .bg-gray-100.min-h-screen.py-12
+    .container.mx-auto.px-4
+      .max-w-4xl.mx-auto.bg-white.shadow-lg.rounded-lg.overflow-hidden
+        .bg-cover.bg-center.h-40(
+          style='background-image: url("/images/profile-cover.jpg")'
+        )
+        .flex.justify-center.-mt-16
+          img.w-32.h-32.rounded-full.border-4.border-white.object-cover(
+            src=instructor.avatar_url || '/images/default_avatar.png',
+            alt='avatar'
+          )
+        .px-8.py-6
+          h1.text-3xl.font-bold.text-gray-900.text-center #{ t('edit_instructor.title') }
+          form.mt-6(
+            action=`/admin/instructors/${instructor.id}/edit`,
+            method='post',
+            enctype='multipart/form-data'
+          )
+            .grid.grid-cols-1.md-grid-cols-2.gap-8
+              .col-span-1
+                label.block.text-gray-700.text-sm.font-semibold(for='name') #{ t('edit_instructor.name_label') }
+                input#name.mt-2.block.w-full.px-4.py-3.border.border-gray-300.rounded-lg.shadow-sm(
+                  type='text',
+                  name='name',
+                  value=instructor.name || '',
+                  required,
+                  class='focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
+                )
+              .col-span-1
+                label.block.text-gray-700.text-sm.font-semibold(for='email') #{ t('edit_instructor.email_label') }
+                input#email.mt-2.block.w-full.px-4.py-3.border.border-gray-300.rounded-lg.shadow-sm(
+                  type='email',
+                  name='email',
+                  required,
+                  value=instructor.email || '',
+                  class='focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
+                )
+              .col-span-1
+                label.block.text-gray-700.text-sm.font-semibold(for='about') #{ t('edit_instructor.about_label') }
+                textarea#about.mt-2.block.w-full.px-4.py-3.border.border-gray-300.rounded-lg.shadow-sm(
+                  name='about',
+                  class='focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
+                )= instructor.about || ''
+              .col-span-1
+                label.block.text-gray-700.text-sm.font-semibold(
+                  for='specialization'
+                ) #{ t('edit_instructor.specialization_label') }
+                input#specialization.mt-2.block.w-full.px-4.py-3.border.border-gray-300.rounded-lg.shadow-sm(
+                  type='text',
+                  name='specialization',
+                  required,
+                  value=instructor.specialization || '',
+                  class='focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
+                )
+              .col-span-1
+                label.block.text-gray-700.text-sm.font-semibold(for='phone') #{ t('edit_instructor.phone_label') }
+                input#phone.mt-2.block.w-full.px-4.py-3.border.border-gray-300.rounded-lg.shadow-sm(
+                  type='text',
+                  name='phone',
+                  value=instructor.phone || '',
+                  class='focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
+                )
+              .col-span-1
+                label.block.text-gray-700.text-sm.font-semibold(for='avatar') #{ t('edit_instructor.avatar_label') }
+                input#avatar.mt-2.block.w-full.px-4.py-3.border.border-gray-300.rounded-lg.shadow-sm(
+                  type='file',
+                  name='avatar',
+                  class='focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
+                )
+
+            .mt-8.flex.justify-center
+              button.px-8.py-3.bg-blue-500.text-white.font-semibold.rounded-lg.shadow-md.transition.duration-300(
+                type='submit',
+                class='hover:bg-blue-600'
+              ) #{ t('edit_instructor.save_button') }

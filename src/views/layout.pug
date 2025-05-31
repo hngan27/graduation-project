@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title Go4ITMastery
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/global.css')
+    link(
+      rel='stylesheet',
+      href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.2.6/tailwind.min.css'
+    )
+    // Font Awesome 6 Free for icon fonts
+    link(
+      rel='stylesheet',
+      href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+    )
+    link(rel='icon', type='image/png', href='/icons/logo1.png')
+
+  body.m-0.p-0
+    include navbar
+    .max-w-6xl.mx-auto.bg-white.rounded-lg.p-6
+      block content
+    include footer
+    script(src='/js/favorite-course.js')

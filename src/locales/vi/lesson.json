@@ -1,0 +1,23 @@
+{
+  "lesson": {
+    "finalExam": "Bài kiểm tra cuối ",
+    "detail": {
+      "content": "Nội dung",
+      "reference": "Tài liệu tham khảo",
+      "noReference": "Chưa có tài liệu tham khảo",
+      "done": "Đã hoàn thành",
+      "markAsDone": "Đánh dấu đã hoàn thành",
+      "unmarkAsDone": "Bỏ đánh dấu đã hoàn thành",
+      "title": "Tiêu đề",
+      "file": "Tệp",
+      "student_done": "Học viên đã hoàn thành",
+      "videoNotSupported": "Trình duyệt của bạn không hỗ trợ video."
+    },
+    "create": "Tạo bài giảng",
+    "edit": "Sửa bài giảng",
+    "delete": "Xoá bài giảng",
+    "backToCourseManagement": "Quay lại trang quản lý khoá học",
+    "deleteConfirmMessage": "Bạn có chắc chắn muốn xóa bài giảng này không?",
+    "canNotDeleteMessage": "học viên đã đăng ký. Bạn cần xóa tất cả học viên trước khi xóa bài giảng này."
+  }
+}

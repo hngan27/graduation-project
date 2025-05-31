@@ -1,0 +1,40 @@
+{
+  "course": {
+    "allCourses": "All Courses",
+    "completed": "Course completed",
+    "courseInfo": "Course Info",
+    "courses": "courses",
+    "newCourse": "Add New Course",
+    "editCourse": "Edit Course",
+    "studentList": "Mentee List",
+    "allLevels": "ALL LEVELS",
+    "allStatus": "ALL STATUS",
+    "learning": "Continue Learning",
+    "progress": "Learning Progress",
+    "detail": {
+      "about": "About this Course",
+      "taughtBy": "Taught by",
+      "instructor": "Mentor",
+      "subInstructor": "Sub Mentor"
+    }
+  },
+  "courseLevels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  },
+  "buttons": {
+    "enrollNow": "Enroll Now",
+    "learnNow": "Learn Now",
+    "favorite": "Add to favorite courses",
+    "unfavorite": "Remove from favorite courses"
+  },
+  "courseDetails": {
+    "instructor": "Mentor",
+    "student": "Mentee",
+    "students": "mentees",
+    "duration": "Duration",
+    "lessons": "Lessons List"
+  }
+}

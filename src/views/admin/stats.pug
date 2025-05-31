@@ -1,0 +1,67 @@
+extends index
+
+block content
+  .container.mx-auto.p-8
+    h2.text-3xl.font-bold.mb-6.text-gray-900.text-center #{ t('statistics.title') }
+
+    .flex.flex-wrap.gap-6
+      // Card for Total Courses
+      a.bg-white.shadow-lg.rounded-lg.p-6.flex-1.text-decoration-none(
+        href='/courses'
+      )
+        h3.text-lg.font-semibold.text-gray-800.text-center #{ t('statistics.total_courses_title') }
+        p.text-2xl.font-bold.text-teal-600.mt-2.text-center #{ statistics.totalCourses }
+        .mt-4.border-t.border-gray-200.pt-4
+          p.text-sm.text-gray-500 #{ t('statistics.total_courses_description') }
+
+      // Card for Total Instructors
+      a.bg-white.shadow-lg.rounded-lg.p-6.flex-1.text-decoration-none(
+        href='/instructors'
+      )
+        h3.text-lg.font-semibold.text-gray-800.text-center #{ t('statistics.total_instructors_title') }
+        p.text-2xl.font-bold.text-teal-600.mt-2.text-center #{ statistics.totalInstructors }
+        .mt-4.border-t.border-gray-200.pt-4
+          p.text-sm.text-gray-500 #{ t('statistics.total_instructors_description') }
+
+      // Card for Total Enrollments
+      a.bg-white.shadow-lg.rounded-lg.p-6.flex-1.text-decoration-none(
+        href='/admin/list-courses'
+      )
+        h3.text-lg.font-semibold.text-gray-800.text-center #{ t('statistics.total_enrollments_title') }
+        p.text-2xl.font-bold.text-teal-600.mt-2.text-center #{ statistics.totalEnrollments }
+        .mt-4.border-t.border-gray-200.pt-4
+          p.text-sm.text-gray-500 #{ t('statistics.total_enrollments_description') }
+
+    // Enrollment chart section
+    .mt-8
+      h3.text-2xl.font-bold.mb-4.text-gray-900.text-center #{ t('statistics.enrollment_over_time_title') }
+      canvas#enrollmentChart.w-full.h-64
+    script(src='https://cdn.jsdelivr.net/npm/chart.js')
+    script.
+      (function() {
+        const chartData = !{JSON.stringify(statistics.enrollmentChart)};
+        const labels = chartData.map(item => item.period);
+        const data = chartData.map(item => item.count);
+        const ctx = document.getElementById('enrollmentChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '# of Enrollments',
+              data: data,
+              backgroundColor: 'rgba(59,130,246,0.2)',
+              borderColor: 'rgba(59,130,246,1)',
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: { title: { display: true, text: 'Period' } },
+              y: { beginAtZero: true, title: { display: true, text: 'Enrollments' } }
+            }
+          }
+        });
+      })();
