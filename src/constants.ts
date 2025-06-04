@@ -9,4 +9,5 @@ export const interactionWeight: Record<string, number> = {
   lesson_done: 4, // hoàn thành bài học
   quiz_done: 5, // hoàn thành quiz
   course_completed: 6, // hoàn thành khóa học
+  unfavorite: -2,
 };

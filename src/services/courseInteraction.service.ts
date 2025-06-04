@@ -20,3 +20,15 @@ export async function logCourseInteraction(
   if (value !== undefined) log.value = value;
   await repo.save(log);
 }
+
+export async function hasLoggedCourseCompleted(userId: string, courseId: string) {
+  const repo = AppDataSource.getRepository(CourseInteraction);
+  const count = await repo.count({
+    where: {
+      user: { id: userId },
+      course: { id: courseId },
+      interaction_type: 'course_completed',
+    },
+  });
+  return count > 0;
+}

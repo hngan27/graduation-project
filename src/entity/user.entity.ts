@@ -63,15 +63,6 @@ export class User {
   })
   specialization: Specialization;
 
-  @Column({ nullable: true })
-  authCode: string;
-
-  @Column({ type: 'datetime', nullable: true })
-  authCodeExpires: Date;
-
-  @Column({ nullable: true })
-  isVerify: boolean;
-
   @OneToMany(() => Course, course => course.instructor)
   instructorCourses: Course[];
 
@@ -96,12 +87,7 @@ export class User {
   constructor(partial?: Partial<User>) {
     Object.assign(this, partial);
   }
-
-  generateAuthCode() {
-    const code = Math.floor(100000 + Math.random() * 900000);
-    return code.toString().padStart(6, '0');
-  }
-
+  
   async hashPassword(password: string, auth_type: AuthType): Promise<string> {
     if (auth_type === AuthType.GOOGLE && password === '') {
       password = process.env.GOOGLE_PASSWORD!;

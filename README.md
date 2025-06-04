@@ -1,5 +1,3 @@
-# naitei2024_e-learning
-
 E-learning system
 
 ## Available Scripts

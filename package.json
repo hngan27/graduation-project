@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npx ts-node build.ts",
     "start": "node dist/bin/www.js",
-    "dev:start": "nodemon --exec ts-node src/bin/www.ts",
+    "dev": "nodemon --exec ts-node src/bin/www.ts",
     "server:start": "SET DEBUG=naitei2024_e-learning:* & npm run dev:start",
     "watch": "tsc -w",
     "lint": "eslint src/**/*.{ts,tsx,json,pug}",

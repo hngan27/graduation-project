@@ -55,9 +55,20 @@ block content
                       when EnrollStatus.PENDING
                         span.text-xs.font-bold.bg-purple-100.text-purple-800.px-2.py-1.rounded-full= course.enrollStatus
                       when EnrollStatus.APPROVED
-                        span.text-xs.font-bold.bg-green-100.text-green-800.px-2.py-1.rounded-full= course.enrollStatus
+                        case course.courseStatus
+                          when CourseStatus.COMPLETED
+                            span.text-xs.font-bold.bg-green-100.text-green-800.px-2.py-1.rounded-full= course.courseStatus
+                          when CourseStatus.INPROGRESS
+                            span.text-xs.font-bold.bg-amber-100.text-amber-800.px-2.py-1.rounded-full= course.courseStatus
+                          default
+                            span.text-xs.font-bold.bg-gray-100.text-gray-800.px-2.py-1.rounded-full= CourseStatus.NOTSTARTED
                       when EnrollStatus.REJECTED
                         span.text-xs.font-bold.bg-red-100.text-red-800.px-2.py-1.rounded-full= course.enrollStatus
+                if course.progress != null
+                  .flex.items-center.space-x-4.mt-2
+                    .w-32.bg-gray-200.rounded-full.h-2
+                      .bg-teal-500.rounded-full.h-2(style=`width: ${course.progress}%`)
+                    span.text-sm.text-gray-500= `${course.progress}%`
   if !current_user || current_user.role !== UserRole.INSTRUCTOR
     .mb-6
     #recommend.max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6

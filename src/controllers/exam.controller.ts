@@ -20,6 +20,7 @@ import { AppDataSource } from '../config/data-source';
 import { Assignment } from '../entity/assignment.entity';
 import { Course } from '../entity/course.entity';
 import { logCourseInteraction } from '../services/courseInteraction.service';
+import { interactionWeight } from '../constants';
 
 export const examList = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -207,7 +208,7 @@ export const submitExam = asyncHandler(
         exam.course,
         'quiz_done',
         exam.id,
-        score
+        interactionWeight.quiz_done
       );
     }
     res.redirect(`${req.params.id}/result`);

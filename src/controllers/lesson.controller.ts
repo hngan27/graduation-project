@@ -22,6 +22,8 @@ import {
 import { AppDataSource } from '../config/data-source';
 import { Lesson } from '../entity/lesson.entity';
 import { StudentLesson } from '../entity/student_lesson.entity';
+import { logCourseInteraction } from '../services/courseInteraction.service';
+import { interactionWeight } from '../constants';
 
 export const getLessonDetail = asyncHandler(
   async (req: RequestWithCourseID, res: Response, next: NextFunction) => {
@@ -198,6 +200,20 @@ export const markDoneLessonPost = asyncHandler(
         done: true,
       });
       studentLessonRecord = await studentRepo.save(newStudentLesson);
+    }
+    // Log lesson completion interaction
+    if (studentLessonRecord) {
+      const userSession = req.session.user!;
+      const course = await getCourseById(req.courseID!);
+      if (userSession && course) {
+        await logCourseInteraction(
+          userSession,
+          course,
+          'lesson_done',
+          studentLessonRecord.lesson.id,
+          interactionWeight.lesson_done
+        );
+      }
     }
     if (!studentLessonRecord) {
       return res.redirect(`/courses/${req.courseID}/lessons/${req.params.id}`);

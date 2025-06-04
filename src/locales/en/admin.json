@@ -3,7 +3,8 @@
     "instructor_approved": "Mentor approved successfully!",
     "instructor_rejected": "Mentor rejected successfully!",
     "instructor_updated": "Mentor updated successfully!",
-    "instructor_deleted": "Mentor deleted successfully!"
+    "instructor_deleted": "Mentor deleted successfully!",
+    "student_deleted": "Mentee deleted successfully!"
   },
   "error": {
     "instructor_not_found": "Mentor not found",

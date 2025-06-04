@@ -9,7 +9,6 @@ import cloudinary from '../config/cloudinary-config';
 import i18next from 'i18next';
 import { Enrollment } from '../entity/enrollment.entity';
 import { LIMIT_RECORDS } from '../constants';
-import { Specialization } from 'src/enums';
 
 export const getUserList = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
