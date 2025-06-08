@@ -1,6 +1,7 @@
 {
   "course": {
-    "completed": "course.completed"
+    "completed": "course.completed",
+    "noPendingRequests": "course.noPendingRequests"
   },
   "common": {
     "all": "common.all",

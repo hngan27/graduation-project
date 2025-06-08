@@ -18,38 +18,41 @@ block content
       polyline(points='12 8 8 12 12 16')
       line(x1='16', y1='12', x2='8', y2='12')
     span #{ t('exam.backToExam') }
+  if attemptLimitExceeded
+    .container.mx-auto.px-4.mt-6
+      p.text-center.text-red-600.font-semibold #{ t('exam.attemptLimitExceeded') }
+  else
+    if exam.time_limit
+      .flex.justify-end.items-center.mb-4
+        span.font-medium #{ t('exam.timeRemaining') }:
+        span#timer.text-xl.font-bold
 
-  if exam.time_limit
-    .flex.justify-end.items-center.mb-4
-      span.font-medium #{ t('exam.timeRemaining') }:
-      span#timer.text-xl.font-bold
-
-  if questions
-    form.bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4(
-      method='post',
-      class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'
-    )
-      .p-6.w-full
-        .pb-2
-          .text-3xl.text-center.font-semibold.mb-2 #{ exam.name }
-          .flex.justify-between
-            .text-gray-600 #{ t('exam.total') }: #{ questions.length }
-            .text-gray-600 #{ t('exam.time') }: #{ exam.time_limit } #{ t('common.minutes') }
-        p.mt-2.text-sm.text-gray-500.leading-relaxed
-          each question, index in questions
-            .mb-6
-              p.font-bold.text-lg.mt-2 #{ index + 1 }. #{ question.content }
-            each option, index in question.options? question.options : ['There are no option!']
-              .mb-4.flex.gap-2
-                input(
-                  type='radio',
-                  name=question.id,
-                  value=option.id,
-                  checked=selectedAnswers && selectedAnswers[question.id] === option.id,
-                  onchange=`saveAnswer(this, '${courseID}', '${exam.id}')`
-                )
-                div #{ option.content }
-        .flex.justify-center
+    if questions
+      form.bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4(
+        method='post',
+        class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'
+      )
+        .p-6.w-full
+          .pb-2
+            .text-3xl.text-center.font-semibold.mb-2 #{ exam.name }
+            .flex.justify-between
+              .text-gray-600 #{ t('exam.total') }: #{ questions.length }
+              .text-gray-600 #{ t('exam.time') }: #{ exam.time_limit } #{ t('common.minutes') }
+          p.mt-2.text-sm.text-gray-500.leading-relaxed
+            each question, index in questions
+              .mb-6
+                p.font-bold.text-lg.mt-2 #{ index + 1 }. #{ question.content }
+              each option, idx in question.options
+                .mb-4.flex.gap-2
+                  input(
+                    type='radio',
+                    name=question.id,
+                    value=option.id,
+                    checked=selectedAnswers && selectedAnswers[question.id] === option.id,
+                    onchange=`saveAnswer(this, '${courseID}', '${exam.id}')`
+                  )
+                  div #{ option.content }
+        .flex.justify-center.mb-6
           button.mt-4.px-5.rounded-lg.text-white.text-sm.tracking-wider.border-none.outline-none.bg-blue-600(
             type='submit',
             class='py-2.5 hover:bg-blue-700'

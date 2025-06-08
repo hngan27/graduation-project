@@ -29,8 +29,8 @@ block content
           p.mt-2.text-gray-600
             | #{ t('user.detail.major') }:&nbsp;
             strong.text-gray-800 #{ user.specialization ? user.specialization : 'N/A' }
-        .px-6.py-4
-          a.inline-block.w-full.px-6.py-3.bg-blue-500.text-white.font-semibold.rounded-lg.shadow-md.transition-colors.duration-300.text-center(
+        .px-6.py-4.text-center
+          a.inline-block.mx-auto.text-sm.px-4.py-2.bg-blue-500.text-white.font-semibold.rounded-md.shadow-md.transition-colors.duration-300.text-center(
             href='/profile/update',
             class='hover:bg-blue-600'
           ) #{ t('profile.update_button') }

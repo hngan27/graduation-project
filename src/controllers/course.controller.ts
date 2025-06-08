@@ -20,7 +20,10 @@ import { EnrollmentWithProgress } from '../helpers/enrollment.helper';
 import { EnrollStatus } from '../enums/EnrollStatus';
 import * as tagService from '../services/tag.service';
 import * as favoriteCourseService from '../services/favoriteCourse.service';
-import { logCourseInteraction, hasLoggedCourseCompleted } from '../services/courseInteraction.service';
+import {
+  logCourseInteraction,
+  hasLoggedCourseCompleted,
+} from '../services/courseInteraction.service';
 import { interactionWeight } from '../constants';
 
 export const courseList = asyncHandler(
@@ -36,15 +39,28 @@ export const courseList = asyncHandler(
       myCourses = await Promise.all(
         myCourses.map(async course => {
           if (course.enrollStatus === EnrollStatus.APPROVED) {
-            const progress = await courseService.getProgressInCourse(course, user);
+            const progress = await courseService.getProgressInCourse(
+              course,
+              user
+            );
             let courseStatus = CourseStatus.NOTSTARTED;
-            if (progress > 0 && progress < 100) courseStatus = CourseStatus.INPROGRESS;
+            if (progress > 0 && progress < 100)
+              courseStatus = CourseStatus.INPROGRESS;
             if (progress === 100) {
               courseStatus = CourseStatus.COMPLETED;
               // Kiểm tra đã log chưa trước khi log
-              const hasLogged = await hasLoggedCourseCompleted(user.id, course.id);
+              const hasLogged = await hasLoggedCourseCompleted(
+                user.id,
+                course.id
+              );
               if (!hasLogged) {
-                await logCourseInteraction(user, course, 'course_completed', course.id, interactionWeight.course_completed);
+                await logCourseInteraction(
+                  user,
+                  course,
+                  'course_completed',
+                  course.id,
+                  interactionWeight.course_completed
+                );
               }
             }
             return { ...course, progress, courseStatus };
@@ -170,7 +186,13 @@ export const courseDetail = async (req: Request, res: Response) => {
 
   // Log course view interaction
   if (userSession) {
-    await logCourseInteraction(userSession, course, 'view', course.id, interactionWeight.view);
+    await logCourseInteraction(
+      userSession,
+      course,
+      'view',
+      course.id,
+      interactionWeight.view
+    );
   }
 
   // Đếm số lượng sinh viên đã đăng ký khóa học
@@ -222,7 +244,13 @@ export const courseEnrollGet = asyncHandler(
       if (course === null) return;
       const user = req.session.user;
       await courseService.enrollCourse(course, user);
-      await logCourseInteraction(user, course, 'enroll', course.id, interactionWeight.enroll); // Ghi log hành động đăng ký
+      await logCourseInteraction(
+        user,
+        course,
+        'enroll',
+        course.id,
+        interactionWeight.enroll
+      ); // Ghi log hành động đăng ký
       return res.redirect(`/courses/${course.id}`);
     }
     return res.redirect('/auth/login');
@@ -246,7 +274,7 @@ export const rejectEnrollGet = asyncHandler(
     const { enrollmentId } = req.params;
     const userSession = req.session.user;
     if (userSession && userSession.role === UserRole.INSTRUCTOR) {
-      await courseService.rejectEnrollment(enrollmentId);
+      await courseService.deleteEnrollment(enrollmentId);
       return res.redirect('back');
     }
     return res.redirect('/auth/login');
@@ -373,10 +401,17 @@ export const courseDeleteGet = asyncHandler(
     const studentCount = await courseService.getStudentCountByCourseId(
       attributes.course.id
     );
+    // Ensure tags and selectedTags are provided for form
+    const tags = await tagService.getAllTags();
+    const selectedTags = attributes.course.tags
+      ? attributes.course.tags.map(tag => tag.id)
+      : [];
     res.render('courses/form', {
       title: req.t('title.edit_course'),
       ...attributes,
       studentCount,
+      tags,
+      selectedTags,
     });
   }
 );
@@ -426,7 +461,13 @@ export const addFavoriteCourse = asyncHandler(
     if (!course) return;
     const user = req.session.user;
     await favoriteCourseService.addFavoriteCourse(user, course);
-    await logCourseInteraction(user, course, 'favorite', course.id, interactionWeight.favorite); // Thêm dòng này
+    await logCourseInteraction(
+      user,
+      course,
+      'favorite',
+      course.id,
+      interactionWeight.favorite
+    ); // Thêm dòng này
     res.json({ success: true });
   }
 );
@@ -441,7 +482,13 @@ export const removeFavoriteCourse = asyncHandler(
     if (!course) return;
     const user = req.session.user;
     await favoriteCourseService.removeFavoriteCourse(user, course);
-    await logCourseInteraction(user, course, 'unfavorite', course.id, interactionWeight.unfavorite); // Có thể thêm nếu muốn log bỏ yêu thích
+    await logCourseInteraction(
+      user,
+      course,
+      'unfavorite',
+      course.id,
+      interactionWeight.unfavorite
+    ); // Có thể thêm nếu muốn log bỏ yêu thích
     res.json({ success: true });
   }
 );

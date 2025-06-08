@@ -134,9 +134,8 @@ export const chatGet = asyncHandler(async (req: Request, res: Response) => {
   } else {
     partners = await getInstructors();
   }
-  // load messages and reverse order so newest appears first
-  const msgsAsc = await getMessages(userId, partnerId);
-  const messages = msgsAsc.reverse();
+  // load messages in chronological order (oldest first)
+  const messages = await getMessages(userId, partnerId);
   let selectedPartner = partners.find(p => p.id === partnerId) || null;
   if (!selectedPartner) {
     selectedPartner = {

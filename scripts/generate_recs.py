@@ -4,6 +4,9 @@ from scipy.sparse import coo_matrix
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from your_db_lib import save_recommendation  # implement in Node or Python
+from dotenv import load_dotenv  # load environment variables from .env
+
+load_dotenv()
 
 def main():
     # load data & models
@@ -31,12 +34,18 @@ def main():
     ).tocsr()
     print(f"Built user_items matrix of shape {user_items.shape}")
 
+    # Debug: start recommendation loop
+    print("Starting recommendations loop", flush=True)
+    print(f"Users to process: {list(u2i.keys())}", flush=True)
+
     # avoid requesting more recs than items
     num_items = user_items.shape[1]
 
     α, β, N = 0.5, 0.5, 10
 
     for user, uid in u2i.items():
+        # Debug: processing each user
+        print(f"Processing user {user} (uid={uid})", flush=True)
         # CF scores
         recs_N = N if N <= num_items else num_items
         ids, scores = model.recommend(uid, user_items, N=recs_N, filter_already_liked_items=False)
@@ -60,8 +69,12 @@ def main():
                for cid in set(cf_scores)|set(cb_scores)}
         top = sorted(hyb.items(), key=lambda x: x[1], reverse=True)[:N]
         for cid, score in top:
-            save_recommendation(user, cid, float(score))
-            print(f"Saved rec for {user}->{cid} score={score}")
+            print(f"Saving recommendation for {user}->{cid} score={score}", flush=True)
+            try:
+                save_recommendation(user, cid, float(score))
+                print(f"Saved recommendation for {user}->{cid} score={score}", flush=True)
+            except Exception as e:
+                print(f"Error saving recommendation for {user}->{cid}: {e}", flush=True)
 
     print("Hybrid recommendations generated.")
 

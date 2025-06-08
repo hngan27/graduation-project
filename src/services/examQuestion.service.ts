@@ -2,10 +2,12 @@ import { AppDataSource } from '../config/data-source';
 import { Question } from '../entity/question.entity';
 import { Option } from '../entity/option.entity';
 import { Assignment } from '../entity/assignment.entity';
+import { Answer } from '../entity/answer.entity';
 
 const questionRepo = AppDataSource.getRepository(Question);
 const optionRepo = AppDataSource.getRepository(Option);
 const examRepo = AppDataSource.getRepository(Assignment);
+const answerRepo = AppDataSource.getRepository(Answer);
 
 export const createQuestion = async (
   examId: string,
@@ -37,6 +39,8 @@ export const updateQuestion = async (
     relations: ['options'],
   });
   if (!question) return;
+  // remove all answers tied to this question to prevent FK constraint errors when deleting options
+  await answerRepo.delete({ question: { id: questionId } });
   question.content = content;
   await questionRepo.save(question);
   // remove old options
@@ -59,6 +63,8 @@ export const deleteQuestion = async (questionId: string) => {
     relations: ['options'],
   });
   if (!question) return;
+  // remove all answers tied to this question to prevent FK constraint errors
+  await answerRepo.delete({ question: { id: questionId } });
   for (const opt of question.options) {
     await optionRepo.delete(opt.id);
   }

@@ -6,7 +6,7 @@
     "courses": "khóa học",
     "newCourse": "Tạo khóa học",
     "editCourse": "Chỉnh sửa khóa học",
-    "studentList": "Danh sách học viên",
+    "studentList": "Danh sách học viên đang chờ phê duyệt",
     "allLevels": "TẤT CẢ CẤP ĐỘ",
     "allStatus": "TẤT CẢ TRẠNG THÁI",
     "learning": "Tiếp tục học",
@@ -16,7 +16,8 @@
       "taughtBy": "Dạy bởi",
       "instructor": "Người hướng dẫn",
       "subInstructor": "Trợ giảng"
-    }
+    },
+    "noPendingRequests": "Không có yêu cầu chờ phê duyệt"
   },
   "courseLevels": {
     "beginner": "Người mới bắt đầu",
@@ -35,6 +36,8 @@
     "student": "Học viên",
     "students": "học viên",
     "duration": "Thời gian",
-    "lessons": "Danh sách bài học"
+    "lessons": "Danh sách bài học",
+    "approve": "Phê duyệt",
+    "reject": "Từ chối"
   }
 }

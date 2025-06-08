@@ -59,6 +59,10 @@ export const index = asyncHandler(
     const userSession = req.session.user;
     if (userSession && userSession.role === 'Student') {
       courseRecommends = await getRecommendationsForUser(userSession.id, 6);
+      // Exclude courses the user has already enrolled in
+      courseRecommends = courseRecommends.filter(
+        course => !myCourses.find(myCourse => myCourse.id === course.id)
+      );
     }
     // fallback to allCourses minus myCourses if no recommendations
     if (!courseRecommends || courseRecommends.length === 0) {

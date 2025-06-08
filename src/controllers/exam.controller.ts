@@ -11,6 +11,7 @@ import {
   getResultOfExamByGradeId,
   updateGradeById,
   getExamByCourseId,
+  getGradesByCourseId,
 } from '../services/exam.service';
 import { RequestWithCourseID } from '../helpers/lesson.helper';
 import { validateUserCurrent } from './user.controller';
@@ -50,6 +51,24 @@ export const getExamDetail = asyncHandler(
     const userSession = req.session.user!;
     const questions = await getQuestionsByExamId(req.params.id);
     const exam = await getExamById(req.params.id);
+    // Check attempt limit
+    if (exam && exam.attempt_limit != null) {
+      const grades = await getGradesByCourseId(exam.course.id, userSession.id);
+      const lastAttempt = grades.reduce(
+        (max, g) => (g.attempt > max ? g.attempt : max),
+        0
+      );
+      if (lastAttempt >= exam.attempt_limit) {
+        // Show attempt limit exceeded message instead of quiz
+        return res.render('exams/detail', {
+          title: req.t('exam.doExam'),
+          exam,
+          courseID: req.courseID,
+          attemptLimitExceeded: true,
+        });
+      }
+    }
+    // Create or update grade for new attempt
     await updateGradeWhenStartExam(exam!, userSession);
 
     res.render('exams/detail', {
@@ -225,9 +244,12 @@ export const resultExam = asyncHandler(
       const score = result?.score;
       const exam = result?.grade.assignment;
       const grade = result?.grade;
+      // also load all questions so result view can show all of them
+      const questions = await getQuestionsByExamId(req.params.id);
       res.render('exams/result', {
         title: req.t('exam.viewResult'),
         detailAnswers,
+        questions,
         score,
         exam,
         grade,
@@ -236,10 +258,13 @@ export const resultExam = asyncHandler(
       });
     } else {
       const exam = await getExamById(req.params.id);
+      // Calculate results
       const result = await getResultOfExam(userSession.id, req.params.id);
       const detailAnswers = result?.filteredAnswers;
       const score = result?.score;
-      const totalQuestions = result?.filteredAnswers.length;
+      // Load full question list for correct result display
+      const questions = await getQuestionsByExamId(req.params.id);
+      const totalQuestions = questions.length;
       await updateGradeWhenSubmitExam(
         exam!,
         userSession,
@@ -250,9 +275,11 @@ export const resultExam = asyncHandler(
       res.render('exams/result', {
         title: req.t('exam.viewResult'),
         detailAnswers,
+        questions,
         score,
         exam,
         courseID: req.courseID,
+        totalQuestions,
       });
     }
   }

@@ -40,64 +40,57 @@
 
   // Student List
   h2#studentlist.text-xl.font-bold.mb-4 #{ t('course.studentList') }
-  ul.grid.gap-4(class='lg:grid-cols-2')
-    each enrollment in enrollments
-      li.grid.relative.group(class='lg:grid-cols-6 hover:shadow-sm hover:bg-blue-50')
-        a.absolute.top-0.right-0.hidden(
-          class='group-hover:block',
-          href=`/courses/${course.id}/${enrollment.id}/delete`
-        )
-          svg.w-5.h-5.text-red-500.rounded-sm.cursor-pointer(
-            class='hover:bg-red-200 hover:border hover:border-red-500',
-            xmlns='http://www.w3.org/2000/svg',
-            fill='none',
-            viewBox='0 0 24 24',
-            stroke='currentColor'
+  - const pendingList = enrollments.filter(e => e.status === EnrollStatus.PENDING);
+  if pendingList.length === 0
+    p.text-gray-500.text-center.mb-4 #{ t('course.noPendingRequests') }
+  else
+    ul.grid.gap-4(class='lg:grid-cols-2')
+      each enrollment in pendingList
+        li.grid.relative.group(class='lg:grid-cols-6 hover:shadow-sm hover:bg-blue-50')
+          a.absolute.top-0.right-0.hidden(
+            class='group-hover:block',
+            href=`/courses/${course.id}/${enrollment.id}/delete`
           )
-            path(
-              stroke-linecap='round',
-              stroke-linejoin='round',
-              stroke-width='2',
-              d='M6 18L18 6M6 6l12 12'
+            svg.w-5.h-5.text-red-500.rounded-sm.cursor-pointer(
+              class='hover:bg-red-200 hover:border hover:border-red-500',
+              xmlns='http://www.w3.org/2000/svg',
+              fill='none',
+              viewBox='0 0 24 24',
+              stroke='currentColor'
             )
-        a.inline-block.col-span-4.flex.items-center.p-4.rounded-md.transition-all.duration-300.ease-in-out.cursor-pointer(
-          href=`/users/${enrollment.student.id}`,
-          class='hover:bg-red-100'
-        )
-          .w-12.h-12.rounded-full.mr-4.overflow-hidden.flex-shrink-0
-            img.w-full.h-full.object-cover(
-              src=enrollment.student.avatar_url || '/images/student.png',
-              alt=enrollment.student.name
-            )
-          .flex.flex-col
-            p.text-sm.truncate.font-medium.text-gray-900
-              | #{ enrollment.student.name }
-            p.text-sm.truncate.text-gray-500
-              | #{ enrollment.student.email }
+              path(
+                stroke-linecap='round',
+                stroke-linejoin='round',
+                stroke-width='2',
+                d='M6 18L18 6M6 6l12 12'
+              )
+          a.inline-block.col-span-4.flex.items-center.p-4.rounded-md.transition-all.duration-300.ease-in-out.cursor-pointer(
+            href=`/users/${enrollment.student.id}`,
+            class='hover:bg-red-100'
+          )
+            .w-12.h-12.rounded-full.mr-4.overflow-hidden.flex-shrink-0
+              img.w-full.h-full.object-cover(
+                src=enrollment.student.avatar_url || '/images/student.png',
+                alt=enrollment.student.name
+              )
+            .flex.flex-col
+              p.text-sm.truncate.font-medium.text-gray-900
+                | #{ enrollment.student.name }
+              p.text-sm.truncate.text-gray-500
+                | #{ enrollment.student.email }
 
-        .col-span-2.flex.items-center.justify-center.p-4
-          if enrollment.status === EnrollStatus.PENDING
-            select.text-xs.rounded-sm.px-2.py-1.bg-purple-100.text-purple-800(
-              name='status',
-              onchange=`window.location.href = '/courses/${enrollment.id}/' + this.value;`
+          .col-span-2.flex.items-center.justify-center.p-4.space-x-2
+            a.px-3.py-1.rounded-md.text-xs.font-medium.bg-green-100.text-green-800.hover-bg-green-200(
+              href=`/courses/${enrollment.id}/approve`
+            ) #{ t('courseDetails.approve') }
+            form(
+              method='POST',
+              action=`/courses/${course.id}/${enrollment.id}/delete`
             )
-              option.bg-purple-100.text-purple-800(value='pending', selected)= EnrollStatus.PENDING
-              option.bg-green-100.text-green-800(value='approve')= EnrollStatus.APPROVED
-              option.bg-red-100.text-red-800(value='reject')= EnrollStatus.REJECTED
-          else if enrollment.status === EnrollStatus.APPROVED
-            select.text-xs.rounded-sm.px-2.py-1.bg-green-100.text-green-800(
-              name='status',
-              onchange=`window.location.href = '/courses/${enrollment.id}/reject';`
-            )
-              option.bg-green-100.text-green-800(value='approve', selected)= EnrollStatus.APPROVED
-              option.bg-red-100.text-red-800(value='reject')= EnrollStatus.REJECTED
-          else if enrollment.status === EnrollStatus.REJECTED
-            select.text-xs.rounded-sm.px-2.py-1.bg-red-100.text-red-800(
-              name='status',
-              onchange=`window.location.href = '/courses/${enrollment.id}/approve';`
-            )
-              option.bg-green-100.text-green-800(value='approve')= EnrollStatus.APPROVED
-              option.bg-red-100.text-red-800(value='reject', selected)= EnrollStatus.REJECTED
+              input(type='hidden', name='enrollmentId', value=enrollment.id)
+              button.px-3.py-1.rounded-md.text-xs.font-medium.bg-red-100.text-red-800.hover-bg-red-200(
+                type='submit'
+              ) #{ t('courseDetails.reject') }
 
   // lesson management
   .flex.justify-between.items-center.mt-6
@@ -271,7 +264,7 @@
           th.p-4.text-center.text-sm.font-semibold.text-black #{ t('exam.status') }
           th.p-4.text-center.text-sm.font-semibold.text-black #{ t('exam.grade') }
           th.p-4.text-center.text-sm.font-semibold.text-black #{ t('exam.maxGrade') }
-          th.p-4.text-center.text-sm.font-semibold.text-black #{ t('exam.feedback') }
+          th.p-4.text-center.text-sm.font-semibold.text-black #{ t('exam.result_detail') }
 
       tbody
         each grade, index in grades
@@ -292,9 +285,9 @@
               .flex.items-center.justify-center
                 span #{ grade.max_grade }
             td.p-4.text-sm
-              .flex.justify-between.items-center
+              .flex.justify-center.items-center.space-x-2
                 span.text-center #{ grade.feedback }
-                a.mr-4(
+                a(
                   href=`/courses/${course.id}/exam/${grade.assignment.id}/result?grade=${grade.id}`
                 )
                   svg.w-5.fill-blue-500(

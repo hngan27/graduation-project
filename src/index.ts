@@ -28,8 +28,8 @@ dotenv.config();
 import cron from 'node-cron';
 import { exec } from 'child_process';
 
-// chạy lúc 2:00 sáng mỗi ngày
-cron.schedule('0 2 * * *', () => {
+// chạy lúc 1:00 sáng mỗi ngày
+cron.schedule('0 1 * * *', () => {
   console.log('[cron] Starting recommendation pipeline…');
   exec(
     // hoặc 'npm run recommend-all' nếu bạn đã gom các bước vào 1 script

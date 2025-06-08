@@ -6,7 +6,7 @@
     "maxGrade": "Max grade",
     "status": "Status",
     "description": "Description",
-    "doExam": "Do Exam",
+    "doExam": "Start Quiz ",
     "total": "Total",
     "time": "Time",
     "score": "Score",
@@ -38,6 +38,8 @@
     "correctOption": "Correct Option",
     "manageQuestions": "Manage Questions",
     "deleteConfirmQuestion": "Are you sure you want to delete this question?",
-    "timeRemaining": "Time remaining"
+    "timeRemaining": "Time remaining",
+    "attemptLimitExceeded": "You have reached the maximum number of attempts.",
+    "result_detail": "Result Detail"
   }
 }

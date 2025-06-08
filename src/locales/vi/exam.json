@@ -38,6 +38,8 @@
     "correctOption": "Đáp án đúng",
     "manageQuestions": "Quản lý câu hỏi",
     "deleteConfirmQuestion": "Bạn có chắc chắn muốn xóa câu hỏi này không?",
-    "timeRemaining": "Thời gian còn lại"
+    "timeRemaining": "Thời gian còn lại",
+    "attemptLimitExceeded": "Bạn đã hết số lần làm bài quy định.",
+    "result_detail": "Chi tiết kết quả"
   }
 }

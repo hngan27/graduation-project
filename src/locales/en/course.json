@@ -6,7 +6,7 @@
     "courses": "courses",
     "newCourse": "Add New Course",
     "editCourse": "Edit Course",
-    "studentList": "Mentee List",
+    "studentList": "List of Mentees Pending Approval",
     "allLevels": "ALL LEVELS",
     "allStatus": "ALL STATUS",
     "learning": "Continue Learning",
@@ -16,7 +16,8 @@
       "taughtBy": "Taught by",
       "instructor": "Mentor",
       "subInstructor": "Sub Mentor"
-    }
+    },
+    "noPendingRequests": "No pending requests"
   },
   "courseLevels": {
     "beginner": "Beginner",
@@ -35,6 +36,8 @@
     "student": "Mentee",
     "students": "mentees",
     "duration": "Duration",
-    "lessons": "Lessons List"
+    "lessons": "Lessons List",
+    "approve": "Approve",
+    "reject": "Reject"
   }
 }
