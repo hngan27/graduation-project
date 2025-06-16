@@ -67,31 +67,34 @@ block content
                 if course.progress != null
                   .flex.items-center.space-x-4.mt-2
                     .w-32.bg-gray-200.rounded-full.h-2
-                      .bg-teal-500.rounded-full.h-2(style=`width: ${course.progress}%`)
+                      .bg-teal-500.rounded-full.h-2(
+                        style=`width: ${course.progress}%`
+                      )
                     span.text-sm.text-gray-500= `${course.progress}%`
   if !current_user || current_user.role !== UserRole.INSTRUCTOR
     .mb-6
     #recommend.max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
       .flex.justify-between.items-center.mb-6
         h2.text-xl.font-bold #{ t('common.recommend') }
+        a.text-teal-500(href='/courses#recommend') #{ t('common.seeAll') }
       .grid.gap-6(class='sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
         each course in courseRecommends.slice(0, 6)
-          a.block.bg-white.shadow-md.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
+          a.block.rounded-lg.p-4.mt-4.transition-all.duration-300.ease-in-out.cursor-pointer(
             class='hover:shadow-xl hover:scale-105',
             href=`/courses/${course.id}`
           )
-            .rounded-lg.overflow-hidden
+            .bg-gray-50.rounded-lg.overflow-hidden
               .flex.justify-center.items-center.h-48
                 img.h-full(
                   src=course.image_url === null ? '/images/course.png' : course.image_url,
                   alt='Image'
                 )
-              .p-4
-                h3.font-semibold.mb-2= course.name
-                p.text-sm.text-gray-600.mb-4= course.description
-                .flex.justify-between.items-center.text-sm.text-gray-500
-                  span= `${course.level} • ${course.duration}`
-                  span= `${course.studentCount} ${t('courseDetails.students')}`
+            .p-4
+              h3.font-semibold.mb-2= course.name
+              p.text-sm.text-gray-600.mb-4= course.description
+              .flex.justify-between.items-center.text-sm.text-gray-500
+                span= `${course.level} • ${course.duration}`
+                //- span= `${course.studentCount} ${t('courseDetails.students')}`
     .mb-6
     #newestCourse.max-w-6xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6
       .flex.justify-between.items-center.mb-6

@@ -6,80 +6,53 @@ html(lang='en')
     title= t('dashboard.title')
     link(rel='stylesheet', href='/stylesheets/global.css')
     link(rel='stylesheet', href='/stylesheets/tailwind.min.css')
+    link(rel='icon', href='/icons/logo1.png', type='image/x-icon')
+    link(
+      rel='stylesheet',
+      href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+    )
   body.bg-gray-100.min-h-screen.flex
     //- Sidebar
-    aside.min-h-screen.w-64.bg-white.p-4.shadow-lg
+    aside.min-h-screen.w-64.bg-brand-primary.p-4.shadow-lg
       .flex.items-center.justify-center.mb-8
-        img.h-8(src='/favicon.ico', alt=t('logo.alt'))
-        span.self-center.text-2xl.font-semibold.whitespace-nowrap(
-          class='dark:text-white'
-        )= t('logo.name')
+        img.h-16(src='/icons/logo.png', alt=t('logo.alt'))
       nav
         ul
           li.mb-4
-            a.flex.items-center.hover-text-teal-800(href='/admin')
-              svg.w-5.h-5.mr-2(
-                xmlns='http://www.w3.org/2000/svg',
-                fill='none',
-                viewBox='0 0 24 24',
-                stroke='currentColor'
-              )
-                path(
-                  stroke-linecap='round',
-                  stroke-linejoin='round',
-                  stroke-width='2',
-                  d='M12 8v8m4-4H8'
-                )
+            a.flex.items-center.text-white.transition.px-3.py-2.rounded(
+              href='/admin',
+              class=(activeMenu === 'dashboard' ? 'bg-blue-500' : '')
+            )
+              i.fas.fa-chart-bar.mr-3
               | #{ t('sidebar.statistics') }
           li.mb-4
-            a.flex.items-center.hover-text-teal-800(
-              href='/admin/list-instructors'
+            a.flex.items-center.text-white.transition.px-3.py-2.rounded(
+              href='/admin/list-instructors',
+              class=(activeMenu === 'instructors' ? 'bg-blue-500' : '')
             )
-              svg.w-5.h-5.mr-2(
-                xmlns='http://www.w3.org/2000/svg',
-                fill='none',
-                viewBox='0 0 24 24',
-                stroke='currentColor'
-              )
-                path(
-                  stroke-linecap='round',
-                  stroke-linejoin='round',
-                  stroke-width='2',
-                  d='M12 8v8m4-4H8'
-                )
+              i.fas.fa-chalkboard-teacher.mr-3
               | #{ t('sidebar.list_instructors') }
           li.mb-4
-            a.flex.items-center.hover-text-teal-800(
-              href='/admin/list-students'
+            a.flex.items-center.text-white.transition.px-3.py-2.rounded(
+              href='/admin/list-students',
+              class=(activeMenu === 'students' ? 'bg-blue-500' : '')
             )
-              svg.w-5.h-5.mr-2(
-                xmlns='http://www.w3.org/2000/svg',
-                fill='none',
-                viewBox='0 0 24 24',
-                stroke='currentColor'
-              )
-                path(
-                  stroke-linecap='round',
-                  stroke-linejoin='round',
-                  stroke-width='2',
-                  d='M12 8v8m4-4H8'
-                )
+              i.fas.fa-user-graduate.mr-3
               | #{ t('sidebar.list_students') }
           li.mb-4
-            a.flex.items-center.hover-text-teal-800(href='/admin/list-courses')
-              svg.w-5.h-5.mr-2(
-                xmlns='http://www.w3.org/2000/svg',
-                fill='none',
-                viewBox='0 0 24 24',
-                stroke='currentColor'
-              )
-                path(
-                  stroke-linecap='round',
-                  stroke-linejoin='round',
-                  stroke-width='2',
-                  d='M12 8v8m4-4H8'
-                )
+            a.flex.items-center.text-white.transition.px-3.py-2.rounded(
+              href='/admin/list-courses',
+              class=(activeMenu === 'courses' ? 'bg-blue-500' : '')
+            )
+              i.fas.fa-book-open.mr-3
               | #{ t('sidebar.list_courses') }
+          // Thêm mục tạo mới user
+          li.mb-4
+            a.flex.items-center.text-white.transition.px-3.py-2.rounded-lg.hover-bg-blue-600(
+              href='/admin/users/create'
+            )
+              i.fas.fa-user-plus.mr-3
+              | #{ t('admin.create_user.title') }
 
     //- Main content
     .flex-1.p-8

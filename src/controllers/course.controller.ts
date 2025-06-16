@@ -25,6 +25,7 @@ import {
   hasLoggedCourseCompleted,
 } from '../services/courseInteraction.service';
 import { interactionWeight } from '../constants';
+import { getRecommendationsForUser } from '../services/recommendation.service';
 
 export const courseList = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -69,9 +70,22 @@ export const courseList = asyncHandler(
         })
       );
     }
-    const courseRecommends = allCourses.filter(
-      course => !myCourses.find(myCourse => myCourse.id === course.id)
-    );
+    // fetch CF+CB hybrid recommendations for student
+    let courseRecommends: Course[] = [];
+    const userSession = req.session.user;
+    if (userSession && userSession.role === UserRole.STUDENT) {
+      courseRecommends = await getRecommendationsForUser(userSession.id, 6);
+      // Exclude courses the user has already enrolled in
+      courseRecommends = courseRecommends.filter(
+        course => !myCourses.find(myCourse => myCourse.id === course.id)
+      );
+    }
+    // fallback to allCourses minus myCourses if no recommendations
+    if (!courseRecommends || courseRecommends.length === 0) {
+      courseRecommends = allCourses.filter(
+        course => !myCourses.find(myCourse => myCourse.id === course.id)
+      );
+    }
 
     const levelFilter = (req.query.level as string) || '';
     const statusFilter = (req.query.status as string) || '';

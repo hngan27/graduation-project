@@ -11,7 +11,7 @@ def save_recommendation(user_id, course_id, score):
     print(f"[save_recommendation] DB params -> host={host}, port={port}, user={user_env}, database={database}", flush=True)
     # Attempt connection
     try:
-        conn = mysql.connector.connect(
+    conn = mysql.connector.connect(
             host=host,
             port=port,
             user=user_env,
@@ -27,19 +27,19 @@ def save_recommendation(user_id, course_id, score):
         raise
     # Execute insert
     try:
-        with conn.cursor() as cur:
+    with conn.cursor() as cur:
             print("[save_recommendation] Executing INSERT", flush=True)
-            cur.execute(
+        cur.execute(
                 "INSERT INTO recommendations (userId, courseId, score) VALUES (%s,%s,%s)",
-                (user_id, course_id, score)
-            )
+            (user_id, course_id, score)
+        )
             print("[save_recommendation] Execute completed", flush=True)
-        conn.commit()
+    conn.commit()
         print("[save_recommendation] Committed", flush=True)
     except Exception as e:
         print(f"[save_recommendation] Query error: {e}", flush=True)
         conn.rollback()
         raise
     finally:
-        conn.close()
+    conn.close()
         print("[save_recommendation] Connection closed", flush=True)

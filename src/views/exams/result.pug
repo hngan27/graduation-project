@@ -20,24 +20,24 @@ block content
     span #{ t('exam.backToExam') }
 
   if gradeId
-    form.bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4.p-4(
-      method='post',
-      class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'
-    )
-      //- .mb-4
-      //-   label.block.text-gray-700.text-xl.font-bold.mb-2.text-center(
-      //-     for='feedback'
-      //-   ) #{ t('exam.feedback') }
-      //-   textarea#feedback.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
-      //-     class='focus:outline-none focus:shadow-outline',
-      //-     name='feedback',
-      //-     rows='4',
-      //-     required
-      //-   )= grade ? grade.feedback : ''
-      //- button.mb.px-4.mx-auto.block.text-sm.bg-blue-700.text-white.rounded.w-fit(
-      //-   type='submit',
-      //-   class='py-2.5 hover:bg-blue-600'
-      //- ) #{ t('common.submit') }
+    //- form.bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4.p-4(
+    //-   method='post',
+    //-   class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'
+    //- )
+    //-   //- .mb-4
+    //-   //-   label.block.text-gray-700.text-xl.font-bold.mb-2.text-center(
+    //-   //-     for='feedback'
+    //-   //-   ) #{ t('exam.feedback') }
+    //-   //-   textarea#feedback.shadow.appearance-none.border.rounded.w-full.py-2.px-3.text-gray-700.leading-tight(
+    //-   //-     class='focus:outline-none focus:shadow-outline',
+    //-   //-     name='feedback',
+    //-   //-     rows='4',
+    //-   //-     required
+    //-   //-   )= grade ? grade.feedback : ''
+    //-   //- button.mb.px-4.mx-auto.block.text-sm.bg-blue-700.text-white.rounded.w-fit(
+    //-   //-   type='submit',
+    //-   //-   class='py-2.5 hover:bg-blue-600'
+    //-   //- ) #{ t('common.submit') }
   if detailAnswers
     .bg-white.w-full.rounded-lg.overflow-hidden.mx-auto.mt-4(
       class='shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] font-[sans-serif]'

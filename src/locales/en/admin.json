@@ -30,7 +30,7 @@
     "title": "Statistics",
     "total_courses_title": "Total Courses",
     "total_courses_description": "Total number of courses",
-    "total_instructors_title": "Total mentees",
+    "total_instructors_title": "Total mentors",
     "total_instructors_description": "Total number of mentors",
     "pending_instructors_title": "Pending Mentors",
     "pending_instructors_description": "Number of mentors waiting for approval",
