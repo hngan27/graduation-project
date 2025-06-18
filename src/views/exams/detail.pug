@@ -60,21 +60,31 @@ block content
 
   script(src='/javascripts/exam.js')
   script.
+    window.examId = !{JSON.stringify(exam.id)};
     (function(){
+      var examId = window.examId;
       var timeLimit = #{exam.time_limit} * 60;
       var timerEl = document.getElementById('timer');
       if (!timerEl) return;
-      var remaining = timeLimit;
+      var remaining = typeof restoreTimer === 'function' ? restoreTimer(examId, timeLimit) : timeLimit;
       function updateTimer(){
         var mins = Math.floor(remaining / 60);
         var secs = remaining % 60;
         timerEl.textContent = mins + ':' + (secs < 10 ? '0' + secs : secs);
         if (remaining <= 0) {
           clearInterval(interval);
+          if (typeof clearExamStorage === 'function') clearExamStorage(examId);
         } else {
           remaining--;
+          if (typeof saveExamTimer === 'function') saveExamTimer(examId, remaining);
         }
       }
       updateTimer();
       var interval = setInterval(updateTimer, 1000);
+      var form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', function() {
+          if (typeof clearExamStorage === 'function') clearExamStorage(examId);
+        });
+      }
     })();

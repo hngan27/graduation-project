@@ -33,7 +33,7 @@ cron.schedule('0 1 * * *', () => {
   console.log('[cron] Starting recommendation pipeline…');
   exec(
     // hoặc 'npm run recommend-all' nếu bạn đã gom các bước vào 1 script
-    'npm run export_feedback && npm run export_courses && py scripts/train_cf.py && py scripts/train_cb.py && py scripts/generate_recs.py',
+    'npm run export_feedback && npm run export_courses && python scripts/train_cf.py && python scripts/train_cb.py && python scripts/generate_recs.py',
     { cwd: __dirname + '/../' }, // đảm bảo path đúng đến root project
     (err, stdout, stderr) => {
       if (err) {
