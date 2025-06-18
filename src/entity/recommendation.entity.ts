@@ -4,11 +4,13 @@ import {
   ManyToOne,
   Column,
   CreateDateColumn,
+  Unique
 } from 'typeorm';
 import { User } from './user.entity';
 import { Course } from './course.entity';
 
 @Entity('recommendations')
+@Unique(['user', 'course']) 
 export class Recommendation {
   @PrimaryGeneratedColumn('increment') id: number;
 
