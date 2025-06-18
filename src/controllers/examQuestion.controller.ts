@@ -11,6 +11,7 @@ import {
 import { AppDataSource } from '../config/data-source';
 import { Question } from '../entity/question.entity';
 import { Option } from '../entity/option.entity';
+import { UserRole } from '../enums/UserRole';
 
 // List questions
 export const questionListGet = asyncHandler(
@@ -22,7 +23,12 @@ export const questionListGet = asyncHandler(
       return res.redirect(`/courses/${req.courseID}/manage`);
     }
     const questions = await getQuestionsByExamId(examId);
-    res.render('exams/questions/list', {
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    res.render(
+      user.role === UserRole.ADMIN ? 'admin/question-list' : 'exams/questions/list', {
       title: req.t('exam.listQuestions'),
       courseID: req.courseID,
       exam,
@@ -74,7 +80,12 @@ export const questionUpdateGet = asyncHandler(
       req.flash('error', req.t('error.notFound'));
       return res.redirect(`/courses/${req.courseID}/exam/${examId}/questions`);
     }
-    res.render('exams/questions/form', {
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    res.render(
+      user.role === UserRole.ADMIN ? 'admin/question-form' : 'exams/questions/form', {
       title: req.t('exam.editQuestion'),
       courseID: req.courseID,
       examId,

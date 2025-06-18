@@ -1,47 +1,4 @@
 extends ../../layout
 
 block content
-  a.flex.items-center.text-blue-600(
-    class='hover:text-blue-800',
-    href=`/courses/${courseID}/exam/${examId}/questions`
-  )
-    svg.w-6.h-6.mr-2(
-      xmlns='http://www.w3.org/2000/svg',
-      viewBox='0 0 24 24',
-      fill='none',
-      stroke='currentColor',
-      stroke-width='2',
-      stroke-linecap='round',
-      stroke-linejoin='round'
-    )
-      circle(cx='12', cy='12', r='10')
-      polyline(points='12 8 8 12 12 16')
-      line(x1='16', y1='12', x2='8', y2='12')
-    span #{ t('common.back') }
-
-  .container.mx-auto.px-4
-    h1.text-2xl.font-bold.mb-4= title
-    form(method='POST', action=action)
-      .mb-4
-        label.block.text-sm.font-medium.mb-1(for='content') #{ t('exam.questionContent') }
-        input#content.w-full.border.px-3.py-2(
-          type='text',
-          name='content',
-          required,
-          value=question ? question.content : ''
-        )
-      each opt, idx in options
-        .mb-4.flex.items-center.gap-2
-          input(
-            type='radio',
-            name='correct',
-            value=idx,
-            checked=question && question.options && question.options[idx] && question.options[idx].is_correct
-          )
-          input.w-full.border.px-3.py-2(
-            type='text',
-            name='options',
-            required,
-            value=question && question.options && question.options[idx] ? question.options[idx].content : ''
-          )
-      button.bg-blue-500.text-white.px-4.py-2.rounded(type='submit') #{ t('common.submit') } 
+  include ../../partials/question-form.pug

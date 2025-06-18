@@ -24,6 +24,7 @@ import { Lesson } from '../entity/lesson.entity';
 import { StudentLesson } from '../entity/student_lesson.entity';
 import { logCourseInteraction } from '../services/courseInteraction.service';
 import { interactionWeight } from '../constants';
+import { UserRole } from '../enums/UserRole';
 
 export const getLessonDetail = asyncHandler(
   async (req: RequestWithCourseID, res: Response, next: NextFunction) => {
@@ -71,10 +72,17 @@ export const lessonList = asyncHandler(
 
 export const lessonCreateGet = asyncHandler(
   async (req: RequestWithCourseID, res: Response, next: NextFunction) => {
-    res.render('lessons/form', {
-      title: req.t('lesson.create'),
-      courseID: req.courseID,
-    });
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    res.render(
+      user.role === UserRole.ADMIN ? 'admin/lesson-form' : 'lessons/form',
+      {
+        title: req.t('lesson.create'),
+        courseID: req.courseID,
+      }
+    );
   }
 );
 
@@ -111,7 +119,12 @@ export const lessonDeleteGet = asyncHandler(
     const lessonId = req.params.id;
     const studentLesson = await getStudentLessonByLessonId(lessonId);
     const lesson = await getLessonById(lessonId);
-    res.render('lessons/delete', {
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    res.render(
+      user.role === UserRole.ADMIN ? 'admin/lesson-delete' : 'lessons/delete',{
       courseID: req.courseID,
       studentLesson,
       lesson,
@@ -130,6 +143,10 @@ export const lessonDeletePost = asyncHandler(
 
 export const lessonUpdateGet = asyncHandler(
   async (req: RequestWithCourseID, res: Response, next: NextFunction) => {
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
     const lessonDetail = await getLessonById(req.params.id);
     if (!lessonDetail) {
       req.flash('error', i18next.t('error.lessonNotFound'));
@@ -137,7 +154,9 @@ export const lessonUpdateGet = asyncHandler(
       return;
     }
     const lesson = { ...lessonDetail };
-    res.render('lessons/form', {
+    res.render(user.role === UserRole.ADMIN
+      ? 'admin/lesson-form'
+      : 'lessons/form', {
       title: req.t('lesson.edit'),
       courseID: req.courseID,
       lesson,
@@ -157,7 +176,12 @@ export const lessonUpdatePost = asyncHandler(
       return;
     }
 
-    let file_url = '';
+    const lessonDetail = await getLessonById(lessonId);
+    if (!lessonDetail) {
+      req.flash('error', i18next.t('error.lessonNotFound'));
+      return res.redirect('/error');
+    }
+    let file_url = lessonDetail.file_url;
     if (req.file) {
       const result = await cloudinary.v2.uploader.upload(req.file.path, {
         folder: 'files',

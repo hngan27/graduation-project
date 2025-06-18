@@ -5,6 +5,7 @@ import {
   OneToOne,
   OneToMany,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Course } from './course.entity';
 import { Question } from './question.entity';
@@ -27,7 +28,7 @@ export class Assignment {
   @Column({ nullable: true })
   attempt_limit?: number;
 
-  @OneToOne(() => Course, course => course.assignment, { nullable: false })
+  @ManyToOne(() => Course, course => course.assignment, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'course_id' })
   course: Course;
 

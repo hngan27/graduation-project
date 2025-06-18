@@ -1,7 +1,8 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import * as courseController from '../controllers/course.controller';
 import { requireInstructor } from '../middleware/require-instructor.middleware';
 import upload from '../config/multer-config';
+import { UserRole } from '../enums/UserRole';
 
 const router: Router = Router();
 
@@ -21,7 +22,26 @@ router.post(
   courseController.courseDeletePost
 );
 
-router.get('/:id/update', requireInstructor, courseController.courseUpdateGet);
+const requireInstructorOrAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (
+    req.session.user &&
+    (req.session.user.role === UserRole.INSTRUCTOR ||
+      req.session.user.role === UserRole.ADMIN)
+  ) {
+    return next();
+  }
+  res.redirect('/auth/login');
+};
+
+router.get(
+  '/:id/update',
+  requireInstructorOrAdmin,
+  courseController.courseUpdateGet
+);
 
 router.post(
   '/:id/update',

@@ -275,7 +275,11 @@ export const approveEnrollGet = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { enrollmentId } = req.params;
     const userSession = req.session.user;
-    if (userSession && userSession.role === UserRole.INSTRUCTOR) {
+    if (
+      userSession &&
+      (userSession.role === UserRole.INSTRUCTOR ||
+        userSession.role === UserRole.ADMIN)
+    ) {
       await courseService.approveEnrollment(enrollmentId);
       return res.redirect('back');
     }
@@ -433,7 +437,15 @@ export const courseDeleteGet = asyncHandler(
 export const courseDeletePost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     await courseService.deleteCourse(req.body.courseId);
-    res.redirect('/courses');
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    if (user.role === UserRole.ADMIN) {
+      return res.redirect('/admin/list-courses');
+    } else {
+      return res.redirect('/courses');
+    }
   }
 );
 
@@ -452,16 +464,22 @@ export const courseUpdateGet = asyncHandler(
     const lessonNamesSelected = course.lessons.map(lesson => lesson.title);
     const tags = await tagService.getAllTags();
     const selectedTags = course.tags ? course.tags.map(tag => tag.id) : [];
-    res.render('courses/form', {
-      title: req.t('course.editCourse'),
-      subInstructors,
-      lessons,
-      course,
-      lessonIdsSelected,
-      lessonNamesSelected,
-      tags,
-      selectedTags,
-    });
+
+    res.render(
+      instructor.role === UserRole.ADMIN
+        ? 'admin/course/course-form'
+        : 'courses/form',
+      {
+        title: req.t('course.editCourse'),
+        subInstructors,
+        lessons,
+        course,
+        lessonIdsSelected,
+        lessonNamesSelected,
+        tags,
+        selectedTags,
+      }
+    );
   }
 );
 

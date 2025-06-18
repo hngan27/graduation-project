@@ -9,6 +9,7 @@ import {
 } from '../helpers/course.helper';
 import { EnrollStatus } from '../enums/EnrollStatus';
 import { CourseStatus } from '../enums/CourseStatus';
+import { getCoursesWithStudentCount } from '../services/course.service';
 
 export const index = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -69,6 +70,10 @@ export const index = asyncHandler(
       courseRecommends = allCourses.filter(
         course => !myCourses.find(myCourse => myCourse.id === course.id)
       );
+    }
+
+    if (courseRecommends.length > 0) {
+      courseRecommends = await getCoursesWithStudentCount(courseRecommends);
     }
 
     res.render('index', {

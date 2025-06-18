@@ -22,6 +22,7 @@ import { Assignment } from '../entity/assignment.entity';
 import { Course } from '../entity/course.entity';
 import { logCourseInteraction } from '../services/courseInteraction.service';
 import { interactionWeight } from '../constants';
+import { UserRole } from '../enums/UserRole';
 
 export const examList = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -97,7 +98,12 @@ export const saveAnswer = asyncHandler(
 
 export const examCreateGet = asyncHandler(
   async (req: RequestWithCourseID, res: Response, next: NextFunction) => {
-    res.render('exams/form', {
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    res.render(
+      user.role === UserRole.ADMIN ? 'admin/exam-form' : 'exams/form',{
       title: req.t('exam.createExam'),
       courseID: req.courseID,
       exam: null,
@@ -150,7 +156,12 @@ export const examDeleteGet = asyncHandler(
       req.flash('error', req.t('error.notFound'));
       return res.redirect(`/courses/${req.courseID}/manage`);
     }
-    res.render('exams/delete', {
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    res.render(
+      user.role === UserRole.ADMIN ? 'admin/exam-delete' : 'exams/delete',{
       title: req.t('exam.deleteExam'),
       courseID: req.courseID,
       exam,
@@ -173,7 +184,12 @@ export const examUpdateGet = asyncHandler(
       req.flash('error', req.t('error.notFound'));
       return res.redirect(`/courses/${req.courseID}/manage`);
     }
-    res.render('exams/form', {
+    const user = req.session.user;
+    if (!user) {
+      return res.redirect('/auth/login');
+    }
+    res.render(
+      user.role === UserRole.ADMIN ? 'admin/exam-form' : 'exams/form',{
       title: req.t('exam.editExam'),
       courseID: req.courseID,
       exam,
@@ -246,7 +262,12 @@ export const resultExam = asyncHandler(
       const grade = result?.grade;
       // also load all questions so result view can show all of them
       const questions = await getQuestionsByExamId(req.params.id);
-      res.render('exams/result', {
+      const user = req.session.user;
+      if (!user) {
+        return res.redirect('/auth/login');
+      }
+      res.render(
+        user.role === UserRole.ADMIN ? 'admin/exam-result' : 'exams/result',{
         title: req.t('exam.viewResult'),
         detailAnswers,
         questions,

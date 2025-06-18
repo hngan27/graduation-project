@@ -6,5 +6,8 @@
   "common": {
     "all": "common.all",
     "allCourses": "common.allCourses"
+  },
+  "lesson": {
+    "currentFile": "lesson.currentFile"
   }
 }

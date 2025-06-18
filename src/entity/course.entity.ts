@@ -61,7 +61,7 @@ export class Course {
   })
   lessons: Lesson[];
 
-  @OneToOne(() => Assignment, assignment => assignment.course)
+  @OneToOne(() => Assignment, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'assignment_id' })
   assignment: Assignment;
 
