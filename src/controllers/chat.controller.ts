@@ -34,12 +34,12 @@ export const chatIndexGet = asyncHandler(
       instructors = await getInstructors();
     }
     // auto-redirect students to first conversation
-    if (userSession.role !== UserRole.INSTRUCTOR) {
-      if (rawChats.length > 0) {
-        return res.redirect(`/chat/${rawChats[0].userId}`);
-      }
-      // do not auto-redirect to instructors when no chat history
-    }
+    // if (userSession.role !== UserRole.INSTRUCTOR) {
+    //   if (rawChats.length > 0) {
+    //     return res.redirect(`/chat/${rawChats[0].userId}`);
+    //   }
+    //   // do not auto-redirect to instructors when no chat history
+    // }
     // attach unread count and compute relative time per partner
     const chats = await Promise.all(
       rawChats.map(async chat => {

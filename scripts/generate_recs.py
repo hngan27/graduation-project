@@ -71,8 +71,7 @@ def main():
         for cid, score in top:
             print(f"Saving recommendation for {user}->{cid} score={score}", flush=True)
             try:
-            save_recommendation(user, cid, float(score))
-                print(f"Saved recommendation for {user}->{cid} score={score}", flush=True)
+                save_recommendation(user, cid, float(score))
             except Exception as e:
                 print(f"Error saving recommendation for {user}->{cid}: {e}", flush=True)
 

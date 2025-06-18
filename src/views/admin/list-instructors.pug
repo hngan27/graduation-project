@@ -59,7 +59,9 @@ block content
                 method='post'
               )
                 button.bg-red-500.text-white.rounded-lg.px-4.py-2.hover-bg-red-600.transition(
-                  type='submit'
+                  type='submit',
+                  disabled,
+                  style='opacity:0.5; cursor:not-allowed;'
                 ) #{ t('instructor.delete_button') }
 
   script(src='/javascripts/admin-confirm.js')
