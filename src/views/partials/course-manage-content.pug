@@ -247,12 +247,12 @@
         .flex.items-center.gap-1
           i.fas.fa-clock.text-gray-500
           span
-            strong #{ t('exam.time') }:
+            strong #{ t('exam.time') }: 
             | #{ exam.time_limit ? exam.time_limit + ' ' + t('common.minutes') : '-' }
         .flex.items-center.gap-1
           i.fas.fa-sync-alt.text-gray-500
           span
-            strong #{ t('exam.attemptLimit') }:
+            strong #{ t('exam.attemptLimit') }: 
             | #{ exam.attempt_limit ? exam.attempt_limit : '-' }
   h2.text-xl.font-bold.my-4 #{ t('exam.listGradeTitle') }
   .pt-8.w-full

@@ -264,7 +264,16 @@ export const getAllUserGradesByCourseId = async (courseId: string) => {
       },
     },
   });
-  return grades;
+  // Lọc ra grade có điểm cao nhất cho mỗi học viên với mỗi assignment
+  const bestGradesMap = new Map();
+  for (const grade of grades) {
+    if (grade.status === AssignmentStatus.TODO) continue;
+    const key = `${grade.student.id}_${grade.assignment.id}`;
+    if (!bestGradesMap.has(key) || grade.grade > bestGradesMap.get(key).grade) {
+      bestGradesMap.set(key, grade);
+    }
+  }
+  return Array.from(bestGradesMap.values());
 };
 
 export const getGradeById = async (gradeId: string) => {
