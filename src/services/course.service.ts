@@ -18,6 +18,7 @@ import { getUserById } from './user.service';
 import { getLessonById } from './lesson.service';
 import { CourseWithStudentCount } from '../helpers/course.helper';
 import { Tag } from '../entity/tag.entity';
+import { sendApproveMailToStudent, sendStudentRegisterMailToInstructor } from '../utils/sendMail';
 
 const courseRepository = AppDataSource.getRepository(Course);
 const enrollmentRepository = AppDataSource.getRepository(Enrollment);
@@ -165,23 +166,10 @@ export const enrollCourse = async (
 
   await enrollmentRepository.save(enrollment);
 
-  const htmlContent = pug.renderFile(
-    path.join(__dirname, '../views/emails/enroll.pug'),
-    {
-      course,
-      student: user,
-      enrollment_date: enrollment.enrollment_date,
-    }
-  );
-
-  const mailOptions = {
-    ...mailOptionsTemplate,
-    to: [course.instructor.email, course.subInstructor?.email],
-    subject: '[Smart Education] New Request Enrollment Course',
-    html: htmlContent,
-  };
-
-  sendEmail(mailOptions);
+  // Gửi mail cho instructor khi có học viên đăng ký
+  if (course.instructor?.email) {
+    await sendStudentRegisterMailToInstructor(course.instructor.email, user.name, course.name);
+  }
 };
 
 export const approveEnrollment = async (
@@ -240,21 +228,10 @@ export const approveEnrollment = async (
       }
     }
 
-    const htmlContent = pug.renderFile(
-      path.join(__dirname, '../views/emails/approved.pug'),
-      {
-        course: enrollment.course,
-      }
-    );
-
-    const mailOptions = {
-      ...mailOptionsTemplate,
-      to: [enrollment.student.email],
-      subject: '[Smart Education] Course Enrollment Approved',
-      html: htmlContent,
-    };
-
-    sendEmail(mailOptions);
+    // Gửi mail cho học viên khi được duyệt
+    if (enrollment.student?.email) {
+      await sendApproveMailToStudent(enrollment.student.email, enrollment.course.name);
+    }
   }
 };
 
@@ -267,22 +244,6 @@ export const rejectEnrollment = async (enrollmentId: string): Promise<void> => {
   if (enrollment) {
     enrollment.status = EnrollStatus.REJECTED;
     await enrollmentRepository.save(enrollment);
-
-    const htmlContent = pug.renderFile(
-      path.join(__dirname, '../views/emails/rejected.pug'),
-      {
-        course: enrollment.course,
-      }
-    );
-
-    const mailOptions = {
-      ...mailOptionsTemplate,
-      to: [enrollment.student.email],
-      subject: '[Smart Education] Course Enrollment Rejected',
-      html: htmlContent,
-    };
-
-    sendEmail(mailOptions);
   }
 };
 
