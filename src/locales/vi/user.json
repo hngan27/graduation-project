@@ -39,5 +39,13 @@
   },
   "success": {
     "profile_updated": "Cập nhật hồ sơ thành công"
+  },
+  "instructor": {
+    "block_button": "Khóa",
+    "active_button": "Kích hoạt"
+  },
+  "student": {
+    "block_button": "Khóa",
+    "active_button": "Kích hoạt"
   }
 }

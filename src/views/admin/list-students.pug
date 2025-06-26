@@ -59,14 +59,17 @@ block content
                   i.fas.fa-spinner
                   | #{ t('student.inprogress') }: #{ student.inProgressCourses || 0 }
 
-              form.inline.delete-form(
-                action=`/admin/students/${student.id}/delete`,
+              form.inline.active-form(
+                action=`/admin/students/${student.id}/toggle-active`,
                 method='post'
               )
-                button.bg-red-500.text-white.rounded-lg.px-4.py-2.hover-bg-red-600.transition(
-                  type='submit',
-                  disabled,
-                  style='opacity:0.5; cursor:not-allowed;'
-                ) #{ t('student.delete_button') }
+                if student.active
+                  button.bg-yellow-500.text-white.rounded-lg.px-4.py-2.hover-bg-yellow-600.transition(
+                    type='submit'
+                  ) #{ t('student.block_button') }
+                else
+                  button.bg-green-500.text-white.rounded-lg.px-4.py-2.hover-bg-green-600.transition(
+                    type='submit'
+                  ) #{ t('student.active_button') }
 
   script(src='/javascripts/admin-confirm.js')

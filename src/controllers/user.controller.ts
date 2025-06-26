@@ -78,6 +78,19 @@ export const getStudentList = asyncHandler(
   }
 );
 
+export const toggleActive = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.params.id;
+  const user = await userService.getUserById(userId);
+  if (!user) {
+    req.flash('error', 'User not found');
+    return res.redirect('back');
+  }
+  user.active = !user.active;
+  await userService.updateUser(userId, { active: user.active });
+  req.flash('success', user.active ? 'Đã kích hoạt tài khoản!' : 'Đã khóa tài khoản!');
+  return res.redirect('back');
+});
+
 export const userDetail = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;

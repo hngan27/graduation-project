@@ -39,5 +39,13 @@
   },
   "success": {
     "profile_updated": "Profile updated successfully"
+  },
+  "instructor": {
+    "block_button": "Block",
+    "active_button": "Activate"
+  },
+  "student": {
+    "block_button": "Block",
+    "active_button": "Activate"
   }
 }

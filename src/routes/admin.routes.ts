@@ -23,6 +23,9 @@ router.post(
 
 router.post('/students/:id/delete', adminController.deleteStudent);
 
+// Toggle active status for student
+router.post('/students/:id/toggle-active', adminController.toggleStudentActive);
+
 router.get('/student-detail/:id', adminController.getStudentDetails);
 
 router.get('/list-courses', adminController.showCourses);
@@ -38,6 +41,9 @@ router.post(
 );
 
 router.post('/instructors/:id/delete', adminController.deleteInstructor);
+
+// Toggle active status for instructor
+router.post('/instructors/:id/toggle-active', adminController.toggleInstructorActive);
 
 router.get('/users/create', adminController.renderCreateUserForm);
 router.post('/users/create', adminController.createUser);

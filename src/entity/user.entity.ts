@@ -56,6 +56,9 @@ export class User {
   @Column({ nullable: true })
   avatar_url: string;
 
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @Column({
     type: 'enum',
     enum: Specialization,

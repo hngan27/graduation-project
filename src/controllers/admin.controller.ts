@@ -186,6 +186,30 @@ export const deleteInstructor = async (
   res.redirect('/admin/list-instructors');
 };
 
+export const toggleInstructorActive = async (req: Request, res: Response) => {
+  const user = await userService.getUserById(req.params.id);
+  if (!user) {
+    req.flash('error', 'User not found');
+    return res.redirect('back');
+  }
+  user.active = !user.active;
+  await userService.updateUser(user.id, { active: user.active });
+  req.flash('success', user.active ? 'Đã kích hoạt tài khoản!' : 'Đã khóa tài khoản!');
+  res.redirect('back');
+};
+
+export const toggleStudentActive = async (req: Request, res: Response) => {
+  const user = await userService.getUserById(req.params.id);
+  if (!user) {
+    req.flash('error', 'User not found');
+    return res.redirect('back');
+  }
+  user.active = !user.active;
+  await userService.updateUser(user.id, { active: user.active });
+  req.flash('success', user.active ? 'Đã kích hoạt tài khoản!' : 'Đã khóa tài khoản!');
+  res.redirect('back');
+};
+
 export const showInstructors = async (
   req: Request,
   res: Response,

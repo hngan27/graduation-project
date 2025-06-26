@@ -43,6 +43,13 @@ export const loginPost = asyncHandler(
     const user = await authenticateUser(dto.email, dto.password);
 
     if (user) {
+      if (!user.active) {
+        return res.render('auth/login', {
+          title: i18next.t('login.title'),
+          attribute: req.body,
+          error_message: i18next.t('login.errors.blocked'),
+        });
+      }
       // Lưu thông tin người dùng vào session
       req.session.user = user;
       // Đảm bảo lưu session trước khi chuyển hướng

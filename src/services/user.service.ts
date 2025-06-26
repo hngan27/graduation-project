@@ -33,9 +33,10 @@ export const sortInstructorByMajor = (
 };
 
 export const getInstructorList = async () => {
+  // Chỉ lấy instructor active
   const instructors: InstructorWithStudentCount[] = await userRepository.find({
     order: { username: 'ASC' },
-    where: { role: UserRole.INSTRUCTOR },
+    where: { role: UserRole.INSTRUCTOR, active: true },
   });
 
   for (const instructor of instructors) {
@@ -72,9 +73,10 @@ export const getSubInstructorList = async (instructor: User) => {
 };
 
 export const getStudentList = async () => {
+  // Chỉ lấy student active
   const students: UserWithNumberOfCourse[] = await userRepository.find({
     order: { username: 'ASC' },
-    where: { role: UserRole.STUDENT },
+    where: { role: UserRole.STUDENT, active: true },
   });
 
   for (const student of students) {

@@ -9,5 +9,13 @@
   },
   "lesson": {
     "currentFile": "lesson.currentFile"
+  },
+  "instructor": {
+    "block_button": "instructor.block_button",
+    "active": "instructor.active"
+  },
+  "student": {
+    "block_button": "student.block_button",
+    "active": "student.active"
   }
 }

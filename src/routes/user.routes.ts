@@ -15,6 +15,9 @@ router.get('/:id/delete', userController.userDeleteGet);
 
 router.post('/:id/delete', userController.userDeletePost);
 
+// Toggle active status
+router.post('/:id/toggle-active', userController.toggleActive);
+
 router.get('/:id/update', userController.userUpdateGet);
 
 router.post('/:id/update', userController.userUpdatePost);
