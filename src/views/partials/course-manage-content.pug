@@ -107,7 +107,7 @@
           th.p-4.text-left.text-sm.font-semibold.text-black #{ t('lesson.detail.title') }
           th.p-4.text-left.text-sm.font-semibold.text-black #{ t('lesson.detail.content') }
           th.p-4.text-left.text-sm.font-semibold.text-black #{ t('lesson.detail.file') }
-          th.p-4.text-left.text-sm.font-semibold.text-black #{ t('lesson.detail.student_done') }
+          //- th.p-4.text-left.text-sm.font-semibold.text-black #{ t('lesson.detail.student_done') }
           th.p-4.text-center.text-sm.font-semibold.text-black #{ t('common.action') }
 
       tbody
@@ -125,11 +125,11 @@
             td.p-4.text-sm.max-w-32
               a.flex.items-center.truncate(href=lesson.file_url)
                 span #{ lesson.file_url }
-            td.p-4.text-sm
-              .flex.flex-col.justify-center.cursor-pointer
-                each item, i in lesson.studentLessons
-                  a(href=`/users/${item.student.id}`)
-                    span.text-green-500 #{ i + 1 }. #{ item.student.name }
+            //- td.p-4.text-sm
+            //-   .flex.flex-col.justify-center.cursor-pointer
+            //-     each item, i in lesson.studentLessons
+            //-       a(href=`/users/${item.student.id}`)
+            //-         span.text-green-500 #{ i + 1 }. #{ item.student.name }
             td.p-4
               .flex.justify-center.items-center
                 a.mr-4(href=`lessons/${lesson.id}/update`)
